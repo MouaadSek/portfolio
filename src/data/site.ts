@@ -62,11 +62,11 @@ export const tracks: { key: Track; code: string; name: string; desc: string; bar
 ];
 
 export const toolbox = [
-  { name: 'Cloud & containers', shipped: ['Kubernetes', 'Docker', 'Azure', 'Terraform', 'Ansible', 'kind'], labs: ['Azure Sentinel', 'KQL', 'Defender for Cloud'] },
+  { name: 'Cloud & containers', shipped: ['Kubernetes', 'Docker', 'Azure', 'Terraform', 'Ansible', 'kind'], labs: ['Azure Sentinel', 'KQL', 'Defender for Cloud', 'Entra ID'] },
   { name: 'DevSecOps', shipped: ['GitLab CI', 'Trivy', 'Safety', 'OPA Gatekeeper', 'Kaniko', 'SonarQube'], labs: ['Semgrep', 'Bandit', 'OWASP ZAP'] },
-  { name: 'Offensive & audit', shipped: ['Nmap', 'HardeningKitty', 'Hayabusa', 'Suricata', 'Wireshark', 'BloodHound'], labs: ['Burp Suite', 'PingCastle', 'Metasploit', 'Wazuh'] },
+  { name: 'Offensive & audit', shipped: ['Nmap', 'HardeningKitty', 'Hayabusa', 'Suricata', 'Wireshark', 'BloodHound'], labs: ['Burp Suite', 'PingCastle', 'Metasploit', 'Wazuh', 'Sigma'] },
   { name: 'GRC', shipped: ['CIA asset inventory', 'Risk register', 'Remediation roadmap', 'MITRE ATT&CK'], labs: ['EBIOS RM', 'ISO 27001', 'NIS2', 'CIS Benchmarks'] },
-  { name: 'Build', shipped: ['Python', 'TypeScript', 'Next.js', 'React', 'PostgreSQL', 'FastAPI', 'Electron', 'Playwright'], labs: ['Flask', 'Node.js'] },
+  { name: 'Build', shipped: ['Python', 'TypeScript', 'Next.js', 'React', 'PostgreSQL', 'FastAPI', 'Electron', 'Playwright'], labs: ['Flask', 'Node.js', 'Selenium', 'Postman'] },
 ];
 
 export const timeline = [

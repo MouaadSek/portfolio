@@ -47,11 +47,11 @@ export const tracks = tracksEn.map((t) => ({ ...t, ...trackFr[t.key] }));
 export const trackLabel: Record<string, string> = { All: 'Tous', Products: 'Produits', DevSecOps: 'DevSecOps', 'Cloud & SRE': 'Cloud & SRE', 'Security audit': 'Audit' };
 
 export const toolbox = [
-  { name: 'Cloud & conteneurs', shipped: ['Kubernetes', 'Docker', 'Azure', 'Terraform', 'Ansible', 'kind'], labs: ['Azure Sentinel', 'KQL', 'Defender for Cloud'] },
+  { name: 'Cloud & conteneurs', shipped: ['Kubernetes', 'Docker', 'Azure', 'Terraform', 'Ansible', 'kind'], labs: ['Azure Sentinel', 'KQL', 'Defender for Cloud', 'Entra ID'] },
   { name: 'DevSecOps', shipped: ['GitLab CI', 'Trivy', 'Safety', 'OPA Gatekeeper', 'Kaniko', 'SonarQube'], labs: ['Semgrep', 'Bandit', 'OWASP ZAP'] },
-  { name: 'Offensif & audit', shipped: ['Nmap', 'HardeningKitty', 'Hayabusa', 'Suricata', 'Wireshark', 'BloodHound'], labs: ['Burp Suite', 'PingCastle', 'Metasploit', 'Wazuh'] },
+  { name: 'Offensif & audit', shipped: ['Nmap', 'HardeningKitty', 'Hayabusa', 'Suricata', 'Wireshark', 'BloodHound'], labs: ['Burp Suite', 'PingCastle', 'Metasploit', 'Wazuh', 'Sigma'] },
   { name: 'GRC', shipped: ['Inventaire DIC des actifs', 'Registre des risques', 'Plan de remédiation', 'MITRE ATT&CK'], labs: ['EBIOS RM', 'ISO 27001', 'NIS2', 'CIS Benchmarks'] },
-  { name: 'Développement', shipped: ['Python', 'TypeScript', 'Next.js', 'React', 'PostgreSQL', 'FastAPI', 'Electron', 'Playwright'], labs: ['Flask', 'Node.js'] },
+  { name: 'Développement', shipped: ['Python', 'TypeScript', 'Next.js', 'React', 'PostgreSQL', 'FastAPI', 'Electron', 'Playwright'], labs: ['Flask', 'Node.js', 'Selenium', 'Postman'] },
 ];
 
 export const timeline = [

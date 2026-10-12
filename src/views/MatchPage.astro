@@ -19,7 +19,7 @@ const t = {
     privacy: 'Analyzed in your browser. The text is never sent or stored.',
     scoreTitle: 'Fit score', matched: 'Skills I can show', legend: 'Solid: used in a project or job. Dashed: labs and coursework.',
     gaps: 'Not covered yet', gapsNote: 'Listed on purpose: better you hear it from me.',
-    projects: 'Projects that prove it', avail: 'Availability', summary: 'Summary for your notes', copy: 'Copy summary', back: 'Back to the portfolio',
+    projects: 'Projects that prove it', avail: 'Availability', summary: 'Summary for your notes', allLabs: 'All 47 projects on the lab map', copy: 'Copy summary', back: 'Back to the portfolio',
     js: {
       tooShort: 'Paste a bit more of the offer (at least a few lines) to get a useful result.',
       noHits: 'No technical skill recognized in this text. Is it the full job description?',
@@ -49,7 +49,7 @@ const t = {
     privacy: 'Analysé dans votre navigateur. Le texte n’est jamais envoyé ni stocké.',
     scoreTitle: 'Score d’adéquation', matched: 'Compétences que je peux montrer', legend: 'Plein : utilisé en projet ou en poste. Pointillé : labs et cours.',
     gaps: 'Pas encore couvert', gapsNote: 'Affiché volontairement : mieux vaut l’entendre de moi.',
-    projects: 'Les projets qui le prouvent', avail: 'Disponibilité', summary: 'Résumé pour vos notes', copy: 'Copier le résumé', back: 'Retour au portfolio',
+    projects: 'Les projets qui le prouvent', avail: 'Disponibilité', summary: 'Résumé pour vos notes', allLabs: 'Les 47 projets sur la cartographie', copy: 'Copier le résumé', back: 'Retour au portfolio',
     js: {
       tooShort: 'Collez un peu plus de l’offre (quelques lignes au moins) pour un résultat utile.',
       noHits: 'Aucune compétence technique reconnue dans ce texte. Est-ce bien la description complète du poste ?',
@@ -130,6 +130,7 @@ const data = JSON.stringify({
         <div class="flex flex-col gap-4">
           <h2 class="font-display text-2xl font-semibold">{t.projects}</h2>
           <div data-m-projects class="grid grid-cols-1 gap-3 sm:grid-cols-3"></div>
+          <a href={path(lang, '/labs')} class="inline-flex min-h-10 items-center gap-2 self-start font-mono text-xs text-accent hover:underline">{t.allLabs} →</a>
         </div>
         <div class="flex flex-col gap-3 rounded-2xl border border-line bg-panel p-6">
           <h2 class="font-display text-xl font-semibold">{t.avail}</h2>
