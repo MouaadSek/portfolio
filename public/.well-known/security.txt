@@ -4,4 +4,4 @@ Contact: mailto:mouaadsekkourii@gmail.com
 Expires: 2027-10-12T00:00:00.000Z
 Preferred-Languages: en, fr
 Canonical: https://mouaadsek.vercel.app/.well-known/security.txt
-Policy: https://mouaadsek.vercel.app/security
+Policy: https://mouaadsek.vercel.app/en/security

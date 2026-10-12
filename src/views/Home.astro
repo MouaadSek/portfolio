@@ -24,7 +24,7 @@ const termData = JSON.stringify({
   email: person.email,
   cv: path(lang, '/cv'),
   pdf: cvPdf(lang),
-  alt: lang === 'fr' ? '/' : '/fr/',
+  alt: lang === 'fr' ? '/en/' : '/',
   home: path(lang, '/'),
   cases: cases.map((c) => ({ id: c.id.toLowerCase(), slug: c.slug, title: c.title, track: c.track, href: path(lang, `/work/${c.slug}`) })),
   skills: toolbox.map((g) => ({ name: g.name, tools: g.shipped.slice(0, 6) })),

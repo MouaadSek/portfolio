@@ -205,7 +205,7 @@ if (termEl) {
     email: () => commands.contact([]),
     hire: () => { line(T.hire, 'text-accent'); setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }), 300); },
     lang: () => { line(T.lang, 'text-accent'); go(d.alt); },
-    security: () => { line(T.security, 'text-accent'); go(`${d.home === '/' ? '' : '/fr'}/security`); },
+    security: () => { line(T.security, 'text-accent'); go(`${d.home === '/' ? '' : '/en'}/security`); },
     clear: () => { out.innerHTML = ''; },
     ctf: () => { (T.ctfIntro as string[]).forEach((l, i) => line(fill(l, { n: String(ctfProgress().length), total: String(CTF_TOTAL) }), i === 0 ? 'text-accent' : '')); },
     flags: () => commands.ctf([]),
@@ -230,8 +230,8 @@ if (termEl) {
       }
       out.scrollTop = out.scrollHeight;
     },
-    labs: () => { line(T.labsGo, 'text-accent'); go(`${d.home === '/' ? '' : '/fr'}/labs`); },
-    match: () => { line(T.matchGo ?? 'opening recruiter match...', 'text-accent'); go(`${d.home === '/' ? '' : '/fr'}/match`); },
+    labs: () => { line(T.labsGo, 'text-accent'); go(`${d.home === '/' ? '' : '/en'}/labs`); },
+    match: () => { line(T.matchGo ?? 'opening recruiter match...', 'text-accent'); go(`${d.home === '/' ? '' : '/en'}/match`); },
     sudo: () => line(T.sudo, 'text-[#ff8a5c]'),
     rm: () => line(T.rm, 'text-[#ff8a5c]'),
     nmap: () => (T.nmap as string[]).forEach((l, i) => line(l, i === 2 ? 'text-faint' : '')),

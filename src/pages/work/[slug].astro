@@ -1,9 +1,9 @@
 ---
 import CasePage from '../../views/CasePage.astro';
-import { cases } from '../../data/cases';
+import { cases } from '../../data/cases.fr';
 export function getStaticPaths() {
   return cases.map((c, i) => ({ params: { slug: c.slug }, props: { c, next: cases[(i + 1) % cases.length] } }));
 }
 const { c, next } = Astro.props;
 ---
-<CasePage c={c} next={next} lang="en" />
+<CasePage c={c} next={next} lang="fr" />

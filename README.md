@@ -20,7 +20,7 @@ Personal portfolio: Cloud Security / DevSecOps profile, 19 projects, 6 case stud
 | Interface strings, both languages | `src/i18n.ts` |
 | Page templates shared by EN and FR | `src/views/` |
 | Cover art drawn in code for each case | `src/components/Art.astro` |
-| Routes | `src/pages/` (English) and `src/pages/fr/` (French) |
+| Routes | `src/pages/` (French, default) and `src/pages/en/` (English). Old `/fr/*` URLs redirect to `/*` in `vercel.json` |
 | CV (HTML, A4, both languages) | `src/views/CvPage.astro` |
 | Interactivity (terminal, command palette, filters, counters) | `src/scripts/ui.ts` |
 | Hero packet animation | `src/scripts/packets.ts` |
@@ -40,7 +40,7 @@ To change content, edit the data files (EN and FR). Everything else reads from t
 | `npm install` | Install dependencies |
 | `npm run dev` | Local dev server on http://localhost:4321 |
 | `npm run build` | Build the static site to `dist/` |
-| `npm run cv` | Regenerate both CV PDFs (EN and FR) from `/cv` and `/fr/cv` (run after `build`, needs Playwright Chromium) |
+| `npm run cv` | Regenerate both CV PDFs (EN and FR) from `/cv` (FR) and `/en/cv` (EN) (run after `build`, needs Playwright Chromium) |
 
 ## To do
 

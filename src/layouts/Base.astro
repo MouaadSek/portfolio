@@ -6,15 +6,15 @@ import CommandPalette from '../components/CommandPalette.astro';
 import { ui, type Lang } from '../i18n';
 
 interface Props { lang?: Lang; title?: string; description?: string; bare?: boolean }
-const { lang = 'en', bare = false } = Astro.props;
+const { lang = 'fr', bare = false } = Astro.props;
 const t = ui[lang];
 const title = Astro.props.title ?? t.metaTitle;
 const description = Astro.props.description ?? t.metaDesc;
 
-// language alternates: /x <-> /fr/x
+// language alternates: French is the default at /x, English lives at /en/x
 const pathname = Astro.url.pathname;
-const enPath = pathname.replace(/^\/fr(\/|$)/, '/');
-const frPath = enPath === '/' ? '/fr/' : `/fr${enPath}`;
+const frPath = pathname.replace(/^\/en(\/|$)/, '/');
+const enPath = frPath === '/' ? '/en/' : `/en${frPath}`;
 const canonical = new URL(pathname, Astro.site);
 ---
 <!doctype html>
@@ -27,7 +27,7 @@ const canonical = new URL(pathname, Astro.site);
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site)} />
     <link rel="alternate" hreflang="fr" href={new URL(frPath, Astro.site)} />
-    <link rel="alternate" hreflang="x-default" href={new URL(enPath, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(frPath, Astro.site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#0a0c0b" />
     <meta property="og:type" content="website" />

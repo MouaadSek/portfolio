@@ -14,7 +14,7 @@ export function content(lang: Lang) {
 }
 
 /** Prefix a site path with the language. */
-export const path = (lang: Lang, p: string) => (lang === 'fr' ? `/fr${p === '/' ? '/' : p}` : p);
+export const path = (lang: Lang, p: string) => (lang === 'en' ? `/en${p === '/' ? '/' : p}` : p);
 export const cvPdf = (lang: Lang) => (lang === 'fr' ? '/Mouaad-Sekkouri-CV-FR.pdf' : '/Mouaad-Sekkouri-CV.pdf');
 
 export const ui = {

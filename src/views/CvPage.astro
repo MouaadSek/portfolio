@@ -106,7 +106,7 @@ const copy = {
     <div class="no-print flex w-full max-w-[210mm] flex-wrap items-center justify-between gap-3">
       <a href={path(lang, '/')} class="font-mono text-sm text-fg-2 hover:text-accent">{copy.back}</a>
       <span class="flex items-center gap-3">
-        <a href={lang === 'fr' ? '/cv' : '/fr/cv'} class="font-mono text-sm text-fg-2 hover:text-accent">{lang === 'fr' ? 'EN' : 'FR'}</a>
+        <a href={lang === 'fr' ? '/en/cv' : '/cv'} class="font-mono text-sm text-fg-2 hover:text-accent">{lang === 'fr' ? 'EN' : 'FR'}</a>
         <a href={cvPdf(lang)} download class="btn-primary min-h-11 px-4 text-sm">{copy.download}</a>
       </span>
     </div>
@@ -190,7 +190,7 @@ const copy = {
             </ul>
           </section>
           <section class="mt-auto rounded-md bg-[#f2f6ee] p-[3mm]">
-            <p class="font-mono text-[8.5px] leading-[1.45] text-[#3d6b0f]">{copy.portfolio}<br /><span class="font-semibold">{site}{lang === 'fr' ? '/fr' : ''}</span></p>
+            <p class="font-mono text-[8.5px] leading-[1.45] text-[#3d6b0f]">{copy.portfolio}<br /><span class="font-semibold">{site}{lang === 'en' ? '/en' : ''}</span></p>
           </section>
         </aside>
       </div>
