@@ -1,23 +1,29 @@
 ---
+import { ui, path, type Lang } from '../i18n';
+interface Props { lang: Lang; altHref: string }
+const { lang, altHref } = Astro.props;
+const t = ui[lang].nav;
+const home = path(lang, '/');
 const links = [
-  { href: '/#work', label: 'Work' },
-  { href: '/#about', label: 'About' },
-  { href: '/#services', label: 'Services' },
-  { href: '/cv', label: 'CV' },
-  { href: '/#contact', label: 'Contact' },
+  { href: `${home}#work`, label: t.work },
+  { href: `${home}#about`, label: t.about },
+  { href: `${home}#services`, label: t.services },
+  { href: path(lang, '/cv'), label: t.cv },
+  { href: `${home}#contact`, label: t.contact },
 ];
 ---
 <header class="sticky top-0 z-40 border-b border-transparent bg-ink/70 backdrop-blur-md transition-colors" data-nav>
   <div class="wrap flex flex-wrap items-center justify-between gap-4 py-4">
-    <a href="/" class="flex items-center gap-2.5 font-mono text-[15px] text-fg" aria-label="Home">
+    <a href={home} class="flex items-center gap-2.5 font-mono text-[15px] text-fg" aria-label="Home">
       <span class="pulse-dot h-2.5 w-2.5 rounded-full bg-accent"></span>
       mouaad.sek<span class="text-dim">:~$</span>
     </a>
     <nav aria-label="Main" class="flex flex-wrap items-center gap-x-6 gap-y-2 text-[15px]">
-      {links.map((l) => <a href={l.href} class="hidden text-fg-2 transition-colors hover:text-accent sm:inline">{l.label}</a>)}
-      <button type="button" data-palette-open aria-label="Open command palette" aria-haspopup="dialog" class="flex min-h-11 items-center gap-2.5 rounded-[10px] border border-[#1f2622] bg-[#111513] px-3.5 font-mono text-[13px] text-dim transition-colors hover:border-line-2 hover:text-fg-2">
+      {links.map((l) => <a href={l.href} class="hidden text-fg-2 transition-colors hover:text-accent md:inline">{l.label}</a>)}
+      <a href={altHref} hreflang={lang === 'fr' ? 'en' : 'fr'} lang={lang === 'fr' ? 'en' : 'fr'} aria-label={t.switchLabel} class="flex min-h-11 min-w-11 items-center justify-center rounded-[10px] border border-[#1f2622] font-mono text-[13px] text-fg-2 transition-colors hover:border-line-2 hover:text-accent">{t.switchTo}</a>
+      <button type="button" data-palette-open aria-label={t.search} aria-haspopup="dialog" class="flex min-h-11 items-center gap-2.5 rounded-[10px] border border-[#1f2622] bg-[#111513] px-3.5 font-mono text-[13px] text-dim transition-colors hover:border-line-2 hover:text-fg-2">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-        Search
+        <span class="hidden sm:inline">{t.search}</span>
         <kbd class="rounded border border-[#2a332e] px-1.5 py-0.5 text-[11px]">Ctrl K</kbd>
       </button>
     </nav>

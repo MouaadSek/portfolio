@@ -3,40 +3,49 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CommandPalette from '../components/CommandPalette.astro';
+import { ui, type Lang } from '../i18n';
 
-interface Props { title?: string; description?: string; bare?: boolean }
-const {
-  title = 'Mouaad Sekkouri · Cloud Security & DevSecOps',
-  description = 'Cybersecurity engineer in training (M2, SUPINFO Lille). DevSecOps, cloud security and audits, plus real products shipped to production.',
-  bare = false,
-} = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+interface Props { lang?: Lang; title?: string; description?: string; bare?: boolean }
+const { lang = 'en', bare = false } = Astro.props;
+const t = ui[lang];
+const title = Astro.props.title ?? t.metaTitle;
+const description = Astro.props.description ?? t.metaDesc;
+
+// language alternates: /x <-> /fr/x
+const pathname = Astro.url.pathname;
+const enPath = pathname.replace(/^\/fr(\/|$)/, '/');
+const frPath = enPath === '/' ? '/fr/' : `/fr${enPath}`;
+const canonical = new URL(pathname, Astro.site);
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site)} />
+    <link rel="alternate" hreflang="fr" href={new URL(frPath, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(enPath, Astro.site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#0a0c0b" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta property="og:image" content={new URL(lang === 'fr' ? '/og-fr.png' : '/og.png', Astro.site)} />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
-  <body class="min-h-screen">
-    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-ink">Skip to content</a>
-    {!bare && <Nav />}
+  <body class="min-h-screen" data-copied={t.copied}>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-ink">{t.skip}</a>
+    {!bare && <Nav lang={lang} altHref={lang === 'fr' ? enPath : frPath} />}
     <main id="main">
       <slot />
     </main>
-    {!bare && <Footer />}
-    {!bare && <CommandPalette />}
+    {!bare && <Footer lang={lang} />}
+    {!bare && <CommandPalette lang={lang} altHref={lang === 'fr' ? enPath : frPath} />}
     <script>
       import '../scripts/ui.ts';
     </script>

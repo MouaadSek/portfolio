@@ -33,13 +33,13 @@ const cio = new IntersectionObserver((entries) => {
     const el = e.target as HTMLElement;
     cio.unobserve(el);
     const end = Number(el.dataset.count);
-    if (reduced) { el.textContent = end.toLocaleString('en-US'); return; }
+    if (reduced) { el.textContent = end.toLocaleString(el.dataset.locale ?? 'en-US'); return; }
     const t0 = performance.now();
     const dur = 1400;
     const tick = (t: number) => {
       const p = Math.min(1, (t - t0) / dur);
       const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(end * eased).toLocaleString('en-US');
+      el.textContent = Math.round(end * eased).toLocaleString(el.dataset.locale ?? 'en-US');
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -73,7 +73,7 @@ chips.forEach((chip) => chip.addEventListener('click', () => {
 async function copyEmail(btn?: HTMLElement) {
   const email = document.body.dataset.email ?? 'mouaadsekkourii@gmail.com';
   try { await navigator.clipboard.writeText(email); } catch { /* clipboard blocked */ }
-  if (btn) { const old = btn.textContent; btn.textContent = 'Copied'; setTimeout(() => (btn.textContent = old), 1500); }
+  if (btn) { const old = btn.textContent; btn.textContent = document.body.dataset.copied ?? 'Copied'; setTimeout(() => (btn.textContent = old), 1500); }
 }
 document.querySelectorAll<HTMLElement>('[data-copy-email]').forEach((b) => b.addEventListener('click', () => copyEmail(b.querySelector('[data-copy-label]') as HTMLElement ?? b)));
 

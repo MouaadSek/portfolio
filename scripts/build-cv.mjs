@@ -19,10 +19,12 @@ const server = http.createServer((req, res) => {
 const exe = process.env.CHROMIUM_PATH || undefined;
 const browser = await chromium.launch(exe ? { executablePath: exe } : {});
 const page = await browser.newPage();
-await page.goto('http://localhost:4999/cv/', { waitUntil: 'networkidle' });
-await page.evaluate(() => document.fonts.ready);
-const pdf = await page.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
-for (const out of ['public/Mouaad-Sekkouri-CV.pdf', 'dist/Mouaad-Sekkouri-CV.pdf']) fs.writeFileSync(out, pdf);
+for (const [route, file] of [['/cv/', 'Mouaad-Sekkouri-CV.pdf'], ['/fr/cv/', 'Mouaad-Sekkouri-CV-FR.pdf']]) {
+  await page.goto(`http://localhost:4999${route}`, { waitUntil: 'networkidle' });
+  await page.evaluate(() => document.fonts.ready);
+  const pdf = await page.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
+  for (const dir of ['public', 'dist']) fs.writeFileSync(path.join(dir, file), pdf);
+}
 await browser.close();
 server.close();
-console.log('CV written to public/ and dist/');
+console.log('CVs (EN + FR) written to public/ and dist/');

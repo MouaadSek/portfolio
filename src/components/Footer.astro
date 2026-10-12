@@ -1,5 +1,8 @@
 ---
-import { person } from '../data/site';
+import { ui, path, content, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const { person } = content(lang);
 ---
 <footer class="border-t border-line">
   <div class="wrap flex flex-wrap items-center justify-between gap-4 py-10 font-mono text-[13px] text-faint">
@@ -7,8 +10,8 @@ import { person } from '../data/site';
     <span class="flex flex-wrap gap-5">
       <a href={person.github} class="hover:text-accent">GitHub</a>
       <a href={person.linkedin} class="hover:text-accent">LinkedIn</a>
-      <a href="/cv" class="hover:text-accent">CV</a>
+      <a href={path(lang, '/cv')} class="hover:text-accent">CV</a>
     </span>
-    <span>Lille, FR · strict CSP, zero trackers</span>
+    <span>{ui[lang].footerNote}</span>
   </div>
 </footer>
