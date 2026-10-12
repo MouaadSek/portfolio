@@ -1,0 +1,142 @@
+---
+import Base from '../layouts/Base.astro';
+import { person, projects } from '../data/site';
+
+const site = 'mouaadsek.vercel.app';
+const experience = [
+  {
+    role: 'Internship, e-invoicing platform', org: 'Baïfall Dream', place: 'Paris', when: 'Jul 2026 - Sep 2026',
+    bullets: [
+      'Wrote the specification of a B2B e-invoicing platform for the 2026 French reform: benchmark of 3 platforms, 95 requirements.',
+      'Built the Factur-X / UBL engine and data model in Python, FastAPI and PostgreSQL, covered by 950+ automated tests.',
+      'Security by design: multi-tenant isolation with PostgreSQL RLS, Argon2id, revocable server sessions, CSRF, deny-by-default roles.',
+      'Compliance validated by an external body (FNFE): 0 errors on all 3 control levels, after reducing 7 anomalies to 0.',
+    ],
+  },
+  {
+    role: 'IT support technician (Netgear)', org: 'Concentrix', place: 'Warsaw, remote', when: 'Jan 2024 - Dec 2025',
+    bullets: [
+      'Triaged and resolved 1,500+ network and security incidents, 85% first contact resolution, L2/L3 escalation under SLA.',
+      'Log analysis and detection of security misconfigurations; wrote 40+ procedures, cut average resolution time by 20%.',
+    ],
+  },
+  {
+    role: 'Software QA tester', org: 'Lionbridge', place: 'Warsaw', when: 'May 2023 - Jan 2024',
+    bullets: ['Validated 200,000+ localized strings with an error rate under 0.5% over 8 consecutive months.'],
+  },
+  {
+    role: 'Software QA tester', org: 'Testronic', place: 'Warsaw', when: 'Jan 2022 - May 2023',
+    bullets: ['Ran 1,500+ web and mobile test cases in Agile teams, caught 90+ critical defects before production (Jira).'],
+  },
+];
+const selected = [
+  { name: 'Travistello', tag: 'live product', text: 'Travel gear research platform in production: Next.js 16, Payload CMS, Postgres. Opaque redirects, privacy-minimal analytics, evidence-backed scores.' },
+  { name: 'Supply chain security on Kubernetes', tag: 'DevSecOps', text: 'GitLab CI blocks critical CVEs (Trivy, Safety); OPA Gatekeeper denies unapproved registries, latest tags and root pods.' },
+  { name: 'JobPilot', tag: 'automation', text: 'Job search engine in Python: 8 source connectors, cross-source deduplication, scoring, tailored CVs. 2,100+ tests.' },
+  { name: 'Canritco infrastructure audit', tag: 'audit, team of 2', text: 'CIA asset inventory, Nmap exposure, 621 CIS checks (HardeningKitty), Hayabusa logs, top 10 risks, 90-day plan.' },
+  { name: 'NetSecure Corp network audit', tag: 'network', text: 'PCAP forensics, 8-step attack chain mapped to MITRE ATT&CK, 12 findings; redesign with 5 VLANs, 802.1X, nftables, Suricata.' },
+  { name: "L'Adress restaurant website", tag: 'real business', text: 'Next.js 15 and Supabase: reservations and quotes with Zod validation, rate limiting, 16 RLS policies, CSP.' },
+];
+const others = projects.filter((p) => !['travistello', 'supply-chain-security', 'jobpilot', 'canritco-audit', 'netsecure', 'ladress'].includes(p.slug ?? '')).length;
+const skills = [
+  { k: 'Cloud & containers', v: 'Kubernetes, Docker, Azure, Terraform, Ansible, kind' },
+  { k: 'DevSecOps', v: 'GitLab CI, Trivy, Safety, OPA Gatekeeper (Rego), Kaniko, SonarQube' },
+  { k: 'Security & audit', v: 'Nmap, HardeningKitty, Hayabusa, Wireshark, Suricata, BloodHound, nftables, 802.1X' },
+  { k: 'GRC', v: 'Risk register, CIA inventory, MITRE ATT&CK; coursework in EBIOS RM, ISO 27001, NIS2' },
+  { k: 'Development', v: 'Python, FastAPI, TypeScript, Next.js, React, PostgreSQL, Playwright, Electron' },
+];
+---
+<Base title="CV · Mouaad Sekkouri" description="CV of Mouaad Sekkouri, M2 Cybersecurity, Cloud Security and DevSecOps." bare>
+  <div class="cv-screen flex flex-col items-center gap-5 bg-[#1a1d1b] px-4 py-8 print:bg-white print:p-0">
+    <div class="no-print flex w-full max-w-[210mm] flex-wrap items-center justify-between gap-3">
+      <a href="/" class="font-mono text-sm text-fg-2 hover:text-accent">← back to portfolio</a>
+      <a href="/Mouaad-Sekkouri-CV.pdf" download class="btn-primary min-h-11 px-4 text-sm">Download PDF</a>
+    </div>
+
+    <article class="cv-page flex h-[297mm] w-[210mm] max-w-full flex-col overflow-hidden bg-white text-[#16191a] shadow-2xl print:shadow-none">
+      <header class="flex items-end justify-between gap-6 bg-[#0a0c0b] px-[14mm] pb-[7mm] pt-[9mm] text-[#e8ede9]">
+        <div class="flex flex-col gap-1">
+          <h1 class="font-display text-[30px] font-extrabold leading-none tracking-[-0.02em]">Mouaad Sekkouri</h1>
+          <p class="font-display text-[14px] font-semibold text-[#b8f25a]">Cloud Security & DevSecOps · M2 Cybersecurity</p>
+          <p class="mt-1 text-[10px] text-[#a9b5ae]">Looking for a 6-month end-of-studies internship from March 2027 · France or Belgium</p>
+        </div>
+        <ul class="flex flex-col items-end gap-0.5 font-mono text-[9px] text-[#c4cec8]">
+          <li>Lille, France</li>
+          <li>{person.email}</li>
+          <li>{site}</li>
+          <li>linkedin.com/in/sekkouri</li>
+          <li>github.com/MouaadSek</li>
+        </ul>
+      </header>
+
+      <div class="grid flex-1 grid-cols-[1fr_62mm] gap-[7mm] px-[14mm] py-[7mm]">
+        <div class="flex min-w-0 flex-col gap-[5mm]">
+          <section>
+            <h2 class="cv-h">Profile</h2>
+            <p class="text-[10px] leading-[1.5] text-[#2b3130]">Cybersecurity master's student with four years in IT (QA, then network security support) and a rare mix: I audit and harden systems, and I also ship real products, one of them live in production. I care about security that teams can actually live with: gates in CI, policies in the cluster, evidence behind every finding.</p>
+          </section>
+
+          <section>
+            <h2 class="cv-h">Experience</h2>
+            <div class="flex flex-col gap-[2.6mm]">
+              {experience.map((e) => (
+                <div>
+                  <div class="flex items-baseline justify-between gap-3">
+                    <span class="text-[11px] font-semibold">{e.role} · <span class="text-[#3d6b0f]">{e.org}</span></span>
+                    <span class="shrink-0 font-mono text-[8.5px] text-[#5c6863]">{e.when}</span>
+                  </div>
+                  <span class="block text-[9px] text-[#5c6863]">{e.place}</span>
+                  <ul class="mt-1 flex list-none flex-col gap-0.5">
+                    {e.bullets.map((b) => <li class="relative pl-3 text-[9.5px] leading-[1.42] text-[#2b3130] before:absolute before:left-0 before:top-[5px] before:h-[3px] before:w-[3px] before:rounded-full before:bg-[#7cb518]">{b}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section>
+            <h2 class="cv-h">Selected projects <span class="font-mono text-[8.5px] font-normal normal-case tracking-normal text-[#5c6863]">case studies on {site}</span></h2>
+            <div class="flex flex-col gap-[1.4mm]">
+              {selected.map((p) => (
+                <div>
+                  <span class="text-[10px] font-semibold">{p.name}</span> <span class="font-mono text-[8px] uppercase text-[#5c6863]">{p.tag}</span>
+                  <p class="text-[9.5px] leading-[1.42] text-[#2b3130]">{p.text}</p>
+                </div>
+              ))}
+              <p class="font-mono text-[8.5px] text-[#5c6863]">+ {others} more: DevSecOps Flask delivery (Kaniko, K8s), Fleetman on Kubernetes, Terraform and Ansible on Azure, monitoring stack, AD hardening, private CA messaging, Interview Assist (Electron).</p>
+            </div>
+          </section>
+        </div>
+
+        <aside class="flex min-w-0 flex-col gap-[5mm] border-l border-[#e3e8e5] pl-[6mm]">
+          <section>
+            <h2 class="cv-h">Skills</h2>
+            <dl class="flex flex-col gap-[2.2mm]">
+              {skills.map((s) => (<div><dt class="text-[9.5px] font-semibold">{s.k}</dt><dd class="text-[9px] leading-[1.42] text-[#2b3130]">{s.v}</dd></div>))}
+            </dl>
+          </section>
+          <section>
+            <h2 class="cv-h">Education</h2>
+            <div class="flex flex-col gap-[2.2mm] text-[9.5px]">
+              <div><span class="block font-semibold">M2 Cybersecurity, PGE</span><span class="block text-[#2b3130]">SUPINFO, Lille</span><span class="font-mono text-[8.5px] text-[#5c6863]">2025 - 2027 · M1 done 2026</span></div>
+              <div><span class="block font-semibold">Bachelor, Computer Engineering</span><span class="block text-[#2b3130]">Vistula University, Warsaw</span><span class="font-mono text-[8.5px] text-[#5c6863]">2021 - 2024</span></div>
+            </div>
+          </section>
+          <section>
+            <h2 class="cv-h">Certification</h2>
+            <p class="text-[9.5px]"><span class="font-semibold">AZ-900</span> Azure Fundamentals<br /><span class="font-mono text-[8.5px] text-[#5c6863]">Microsoft · March 2026</span></p>
+          </section>
+          <section>
+            <h2 class="cv-h">Languages</h2>
+            <ul class="flex flex-col gap-1 text-[9.5px]">
+              {person.languages.map((l) => <li class="flex justify-between"><span>{l.name}</span><span class="font-mono text-[8.5px] text-[#5c6863]">{l.level}</span></li>)}
+            </ul>
+          </section>
+          <section class="mt-auto rounded-md bg-[#f2f6ee] p-[3mm]">
+            <p class="font-mono text-[8.5px] leading-[1.45] text-[#3d6b0f]">Full portfolio, 19 projects and 6 case studies:<br /><span class="font-semibold">{site}</span></p>
+          </section>
+        </aside>
+      </div>
+    </article>
+  </div>
+</Base>

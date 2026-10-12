@@ -1,0 +1,40 @@
+---
+import { projects, person } from '../data/site';
+import { cases } from '../data/cases';
+
+type Item = { group: string; label: string; hint: string; href?: string; action?: string };
+const items: Item[] = [
+  { group: 'Go to', label: 'Selected work', hint: 'section', href: '/#work' },
+  { group: 'Go to', label: 'All projects', hint: 'section', href: '/#index' },
+  { group: 'Go to', label: 'Toolbox', hint: 'section', href: '/#toolbox' },
+  { group: 'Go to', label: 'About and experience', hint: 'section', href: '/#about' },
+  { group: 'Go to', label: 'Services for clients', hint: 'section', href: '/#services' },
+  { group: 'Go to', label: 'Contact', hint: 'section', href: '/#contact' },
+  ...cases.map((c) => ({ group: 'Case files', label: c.title, hint: c.id, href: `/work/${c.slug}` })),
+  ...projects.filter((p) => !p.slug).map((p) => ({ group: 'Projects', label: p.title, hint: p.track, href: p.href ?? '/#index' })),
+  { group: 'Actions', label: 'Open CV', hint: 'page', href: '/cv' },
+  { group: 'Actions', label: 'Download CV (PDF)', hint: 'pdf', href: '/Mouaad-Sekkouri-CV.pdf' },
+  { group: 'Actions', label: 'Copy email address', hint: person.email, action: 'copy-email' },
+  { group: 'Actions', label: 'GitHub profile', hint: 'external', href: person.github },
+  { group: 'Actions', label: 'LinkedIn profile', hint: 'external', href: person.linkedin },
+];
+---
+<dialog data-palette aria-label="Command palette" class="m-auto mt-[12vh] w-[min(640px,calc(100vw-32px))] overflow-hidden rounded-2xl border border-line-2 bg-[#0d110f] p-0 text-fg shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm">
+  <div class="flex items-center gap-3 border-b border-line px-4">
+    <span class="font-mono text-accent" aria-hidden="true">$</span>
+    <label for="palette-input" class="sr-only">Search projects, sections and actions</label>
+    <input id="palette-input" data-palette-input type="text" autocomplete="off" spellcheck="false" placeholder="grep projects, sections, actions..." class="h-14 w-full bg-transparent font-mono text-[15px] text-fg placeholder:text-faint focus:outline-none" />
+    <kbd class="rounded border border-[#2a332e] px-1.5 py-0.5 font-mono text-[11px] text-dim">Esc</kbd>
+  </div>
+  <ul data-palette-list role="listbox" aria-label="Results" class="max-h-[50vh] overflow-y-auto p-2">
+    {items.map((it) => (
+      <li role="option" aria-selected="false" data-item data-text={`${it.label} ${it.hint} ${it.group}`.toLowerCase()} data-href={it.href} data-action={it.action}
+        class="flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-lg px-3 py-2 text-[15px] text-fg-2 aria-selected:bg-[#17200f] aria-selected:text-fg">
+        <span class="flex items-center gap-3"><span class="w-20 shrink-0 font-mono text-[11px] uppercase text-faint">{it.group}</span>{it.label}</span>
+        <span class="truncate font-mono text-xs text-faint">{it.hint}</span>
+      </li>
+    ))}
+  </ul>
+  <p data-palette-empty hidden class="px-5 py-8 text-center font-mono text-sm text-faint">No match. Try "kubernetes" or "audit".</p>
+  <p class="border-t border-line px-4 py-2.5 font-mono text-[11px] text-faint">↑↓ navigate · Enter open · Esc close</p>
+</dialog>

@@ -1,0 +1,14 @@
+---
+import { person } from '../data/site';
+---
+<footer class="border-t border-line">
+  <div class="wrap flex flex-wrap items-center justify-between gap-4 py-10 font-mono text-[13px] text-faint">
+    <span>© {new Date().getFullYear()} {person.name}</span>
+    <span class="flex flex-wrap gap-5">
+      <a href={person.github} class="hover:text-accent">GitHub</a>
+      <a href={person.linkedin} class="hover:text-accent">LinkedIn</a>
+      <a href="/cv" class="hover:text-accent">CV</a>
+    </span>
+    <span>Lille, FR · strict CSP, zero trackers</span>
+  </div>
+</footer>
