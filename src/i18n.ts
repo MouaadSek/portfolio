@@ -24,7 +24,7 @@ export const ui = {
     nav: { work: 'Work', labs: 'Lab map', about: 'About', services: 'Services', match: 'Match', security: 'Security', cv: 'CV', contact: 'Contact', search: 'Search', switchTo: 'FR', switchLabel: 'Version française' },
     skip: 'Skip to content',
     heroTitleA: 'I secure systems.', heroTitleB1: 'I ', heroTitleShip: 'ship', heroTitleB2: ' them too.',
-    heroLead: 'Mouaad Sekkouri. M2 Cybersecurity at SUPINFO Lille, heading for Cloud Security and DevSecOps. Four years in IT, 19 projects with code or reports and 39 more labs, from Kubernetes admission control to a product live in production.',
+    heroLead: 'Mouaad Sekkouri. M2 Cybersecurity at SUPINFO Lille, heading for Cloud Security and DevSecOps. Four years in IT, 19 projects with code or reports and 28 more labs, from Kubernetes admission control to a product live in production.',
     hire: 'Hire me', workWith: 'Work with me', cvPdf: 'CV (PDF)', packets: 'malicious packets dropped. Move your cursor: it is a firewall too.',
     term: { base: 'Lille, mobile across France', live: 'travistello in production', done: 'internship @ Baïfall Dream', open: 'alternance, available now', open2: 'stage, Mar 2027, 6 months' },
     statsLabel: 'Key numbers',
@@ -52,7 +52,7 @@ export const ui = {
     terminal: {
       label: 'Terminal command', placeholder: 'type help and press Enter', hint: 'interactive',
       notFound: 'command not found: {cmd}. Type help.',
-      help: [['help', 'list commands'], ['whoami', 'who I am, in 3 lines'], ['projects', 'list the case files'], ['open <id>', 'open a case file, e.g. open cf-02'], ['skills', 'what I work with'], ['cv', 'open my CV (cv pdf to download)'], ['contact', 'show and copy my email'], ['hire', 'jump to contact'], ['lang', 'switch to French'], ['ctf', 'a small challenge for the curious'], ['match', 'match me against a job offer'], ['labs', 'all 58 projects on one network map'], ['clear', 'clear the screen']],
+      help: [['help', 'list commands'], ['whoami', 'who I am, in 3 lines'], ['projects', 'list the case files'], ['open <id>', 'open a case file, e.g. open cf-02'], ['skills', 'what I work with'], ['cv', 'open my CV (cv pdf to download)'], ['contact', 'show and copy my email'], ['hire', 'jump to contact'], ['lang', 'switch to French'], ['ctf', 'a small challenge for the curious'], ['match', 'match me against a job offer'], ['labs', 'all 47 projects on one network map'], ['clear', 'clear the screen']],
       helpFoot: 'Tab completes, ↑ ↓ browse history. Some commands are not listed.',
       whoami: ['Mouaad Sekkouri, M2 Cybersecurity at SUPINFO Lille.', 'Cloud Security and DevSecOps, 4 years in IT, products shipped to production.', 'Available now for an alternance, internship from March 2027, mobile across France.'],
       projectsHead: 'case files (open <id> to read one):',
@@ -88,7 +88,7 @@ export const ui = {
     secContext: 'Context', secApproach: 'Approach', secOutcome: 'Outcome', secLessons: 'Lessons', secEvidence: 'Evidence', evidenceTitle: 'Straight from the code', evidenceLead: 'Excerpts from the actual repository and deliverables, trimmed for length.', copy: 'Copy', sectionsLabel: 'Case file sections',
     problem: 'The problem', results: 'Results', differently: "What I'd do differently", nextCase: 'NEXT CASE FILE', caseFile: 'Case file',
     // palette
-    pal: { labs: 'Lab map: all 58 projects by infrastructure', match: 'Recruiter match: paste a job offer', security: 'How this site is built', goto: 'Go to', cases: 'Case files', projects: 'Projects', actions: 'Actions', section: 'section', work: 'Selected work', index: 'Projects with proof', toolbox: 'Toolbox', about: 'About and experience', services: 'Services for clients', contact: 'Contact', openCv: 'Open CV', dlCv: 'Download CV (PDF)', copy: 'Copy email address', gh: 'GitHub profile', li: 'LinkedIn profile', external: 'external', page: 'page', placeholder: 'grep projects, sections, actions...', inputLabel: 'Search projects, sections and actions', results: 'Results', empty: 'No match. Try "kubernetes" or "audit".', help: '↑↓ navigate · Enter open · Esc close', lang: 'Version française' },
+    pal: { labs: 'Lab map: all 47 projects by infrastructure', match: 'Recruiter match: paste a job offer', security: 'How this site is built', goto: 'Go to', cases: 'Case files', projects: 'Projects', actions: 'Actions', section: 'section', work: 'Selected work', index: 'Projects with proof', toolbox: 'Toolbox', about: 'About and experience', services: 'Services for clients', contact: 'Contact', openCv: 'Open CV', dlCv: 'Download CV (PDF)', copy: 'Copy email address', gh: 'GitHub profile', li: 'LinkedIn profile', external: 'external', page: 'page', placeholder: 'grep projects, sections, actions...', inputLabel: 'Search projects, sections and actions', results: 'Results', empty: 'No match. Try "kubernetes" or "audit".', help: '↑↓ navigate · Enter open · Esc close', lang: 'Version française' },
   },
   fr: {
     metaTitle: 'Mouaad Sekkouri · Sécurité Cloud & DevSecOps',
@@ -96,7 +96,7 @@ export const ui = {
     nav: { work: 'Projets', labs: 'Labs', about: 'Parcours', services: 'Services', match: 'Adéquation', security: 'Sécurité', cv: 'CV', contact: 'Contact', search: 'Rechercher', switchTo: 'EN', switchLabel: 'English version' },
     skip: 'Aller au contenu',
     heroTitleA: 'Je sécurise les systèmes.', heroTitleB1: 'Et je les ', heroTitleShip: 'livre', heroTitleB2: '.',
-    heroLead: 'Mouaad Sekkouri. M2 Cybersécurité à SUPINFO Lille, cap sur la sécurité cloud et le DevSecOps. Quatre ans dans l’IT, 19 projets avec code ou rapport et 39 labs de plus, du contrôle d’admission Kubernetes à un produit en production.',
+    heroLead: 'Mouaad Sekkouri. M2 Cybersécurité à SUPINFO Lille, cap sur la sécurité cloud et le DevSecOps. Quatre ans dans l’IT, 19 projets avec code ou rapport et 28 labs de plus, du contrôle d’admission Kubernetes à un produit en production.',
     hire: 'Me recruter', workWith: 'Travailler ensemble', cvPdf: 'CV (PDF)', packets: 'paquets malveillants bloqués. Bougez la souris : elle aussi est un pare-feu.',
     term: { base: 'Lille, mobile partout en France', live: 'travistello en production', done: 'stage @ Baïfall Dream', open: 'alternance, dès maintenant', open2: 'stage, mars 2027, 6 mois' },
     statsLabel: 'Chiffres clés',
@@ -124,7 +124,7 @@ export const ui = {
     terminal: {
       label: 'Commande du terminal', placeholder: 'tapez help puis Entrée', hint: 'interactif',
       notFound: 'commande introuvable : {cmd}. Tapez help.',
-      help: [['help', 'liste des commandes'], ['whoami', 'qui je suis, en 3 lignes'], ['projects', 'liste des dossiers'], ['open <id>', 'ouvrir un dossier, ex. open cf-02'], ['skills', 'mes outils'], ['cv', 'ouvrir mon CV (cv pdf pour le télécharger)'], ['contact', 'afficher et copier mon email'], ['hire', 'aller au contact'], ['lang', 'switch to English'], ['ctf', 'un petit défi pour les curieux'], ['match', 'comparer mon profil à une offre'], ['labs', 'les 58 projets sur une carte réseau'], ['clear', 'effacer l’écran']],
+      help: [['help', 'liste des commandes'], ['whoami', 'qui je suis, en 3 lignes'], ['projects', 'liste des dossiers'], ['open <id>', 'ouvrir un dossier, ex. open cf-02'], ['skills', 'mes outils'], ['cv', 'ouvrir mon CV (cv pdf pour le télécharger)'], ['contact', 'afficher et copier mon email'], ['hire', 'aller au contact'], ['lang', 'switch to English'], ['ctf', 'un petit défi pour les curieux'], ['match', 'comparer mon profil à une offre'], ['labs', 'les 47 projets sur une carte réseau'], ['clear', 'effacer l’écran']],
       helpFoot: 'Tab complète, ↑ ↓ parcourt l’historique. Certaines commandes ne sont pas listées.',
       whoami: ['Mouaad Sekkouri, M2 Cybersécurité à SUPINFO Lille.', 'Sécurité cloud et DevSecOps, 4 ans dans l’IT, produits livrés en production.', 'Disponible en alternance dès maintenant, stage dès mars 2027, mobile partout en France.'],
       projectsHead: 'dossiers (open <id> pour en lire un) :',
@@ -158,6 +158,6 @@ export const ui = {
     allCases: 'Tous les dossiers', role: 'RÔLE', when: 'QUAND', stack: 'STACK', link: 'LIEN', privateRepo: 'Repo privé, démo sur demande',
     secContext: 'Contexte', secApproach: 'Approche', secOutcome: 'Résultats', secLessons: 'Retour d’expérience', secEvidence: 'Preuves', evidenceTitle: 'Directement depuis le code', evidenceLead: 'Extraits du vrai dépôt et des livrables, raccourcis pour la lecture.', copy: 'Copier', sectionsLabel: 'Sections du dossier',
     problem: 'Le problème', results: 'Résultats', differently: 'Ce que je ferais autrement', nextCase: 'DOSSIER SUIVANT', caseFile: 'Dossier',
-    pal: { labs: 'Cartographie des labs : les 58 projets par infrastructure', match: 'Adéquation : collez une offre', security: 'Comment ce site est construit', goto: 'Aller à', cases: 'Dossiers', projects: 'Projets', actions: 'Actions', section: 'section', work: 'Projets choisis', index: 'Projets avec preuve', toolbox: 'Boîte à outils', about: 'Parcours et expérience', services: 'Services pour les clients', contact: 'Contact', openCv: 'Ouvrir le CV', dlCv: 'Télécharger le CV (PDF)', copy: 'Copier l’adresse email', gh: 'Profil GitHub', li: 'Profil LinkedIn', external: 'externe', page: 'page', placeholder: 'grep projets, sections, actions...', inputLabel: 'Rechercher projets, sections et actions', results: 'Résultats', empty: 'Aucun résultat. Essayez « kubernetes » ou « audit ».', help: '↑↓ naviguer · Entrée ouvrir · Échap fermer', lang: 'English version' },
+    pal: { labs: 'Cartographie des labs : les 47 projets par infrastructure', match: 'Adéquation : collez une offre', security: 'Comment ce site est construit', goto: 'Aller à', cases: 'Dossiers', projects: 'Projets', actions: 'Actions', section: 'section', work: 'Projets choisis', index: 'Projets avec preuve', toolbox: 'Boîte à outils', about: 'Parcours et expérience', services: 'Services pour les clients', contact: 'Contact', openCv: 'Ouvrir le CV', dlCv: 'Télécharger le CV (PDF)', copy: 'Copier l’adresse email', gh: 'Profil GitHub', li: 'Profil LinkedIn', external: 'externe', page: 'page', placeholder: 'grep projets, sections, actions...', inputLabel: 'Rechercher projets, sections et actions', results: 'Résultats', empty: 'Aucun résultat. Essayez « kubernetes » ou « audit ».', help: '↑↓ naviguer · Entrée ouvrir · Échap fermer', lang: 'English version' },
   },
 };
