@@ -23,9 +23,14 @@ Personal portfolio: Cloud Security / DevSecOps profile, 19 projects, 6 case stud
 | Routes | `src/pages/` (English) and `src/pages/fr/` (French) |
 | CV (HTML, A4, both languages) | `src/views/CvPage.astro` |
 | Interactivity (terminal, command palette, filters, counters) | `src/scripts/ui.ts` |
+| Hero packet animation | `src/scripts/packets.ts` |
+| CTF (5 flags, hashes only) | `src/scripts/ctf.ts`, flags in the home page source, `public/robots.txt`, `public/.well-known/security.txt`, the `X-CTF-Flag` header in `vercel.json`, and the console |
+| "Try to hack me" CSP demo | `src/scripts/hackme.ts` (on the security page) |
+| Recruiter match | `src/views/MatchPage.astro`, `src/scripts/match.ts`, skills in `src/data/match.ts` |
+| Skills constellation | `src/scripts/graph.ts`, project to tool links in `src/data/graph.ts` |
 | Security headers | `vercel.json` |
 
-To change content, edit the two data files. Everything else reads from them.
+To change content, edit the data files (EN and FR). Everything else reads from them.
 
 ## Commands
 

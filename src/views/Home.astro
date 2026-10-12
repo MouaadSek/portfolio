@@ -2,12 +2,22 @@
 import Base from '../layouts/Base.astro';
 import Art from '../components/Art.astro';
 import { ui, path, content, cvPdf, type Lang } from '../i18n';
+import { projectTools } from '../data/graph';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = ui[lang];
 const { person, projects, tracks, toolbox, timeline, stats, cases, trackLabel } = content(lang);
 const nf = lang === 'fr' ? 'fr-FR' : 'en-US';
+const trackColors: Record<string, string> = { Products: '#b8f25a', DevSecOps: '#5eead4', 'Cloud & SRE': '#f5a524', 'Security audit': '#ff8a5c' };
+const toolCount = new Map<string, number>();
+Object.values(projectTools).flat().forEach((tool) => toolCount.set(tool, (toolCount.get(tool) ?? 0) + 1));
+const graphTools = [...toolCount.entries()].sort((a, b) => b[1] - a[1]);
+const graphData = JSON.stringify({
+  tools: graphTools.map(([tool]) => tool),
+  projects: projects.map((p) => ({ id: p.id, title: p.title, track: p.track, href: p.slug ? path(lang, `/work/${p.slug}`) : p.href, tools: projectTools[p.id] ?? [] })),
+  colors: trackColors,
+});
 const termData = JSON.stringify({
   lang,
   email: person.email,
@@ -32,9 +42,11 @@ const serviceIcons = [
 ];
 ---
 <Base lang={lang}>
+  <Fragment set:html="<!-- Curious? Good. CTF 1/5: MSK{v13w_s0urc3_1s_4_sk1ll} . Submit it in the terminal: submit MSK{...} -->" />
   <!-- HERO -->
   <section class="relative overflow-hidden" id="top">
     <div class="grid-bg pointer-events-none absolute inset-0 h-[900px]" aria-hidden="true"></div>
+    <canvas data-packets class="pointer-events-none absolute inset-0 h-full w-full opacity-80 [mask-image:linear-gradient(to_right,rgba(0,0,0,.18)_0%,rgba(0,0,0,.35)_38%,#000_58%)]" aria-hidden="true"></canvas>
     <div class="wrap relative flex flex-wrap items-center gap-14 pb-24 pt-16 sm:pt-20">
       <div class="flex min-w-0 flex-[999_1_560px] flex-col gap-7">
         <p class="inline-flex items-center gap-2.5 self-start rounded-full border border-line-2 bg-[#0f1411] px-3.5 py-2 font-mono text-[13px] text-fg-2">
@@ -51,6 +63,10 @@ const serviceIcons = [
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path></svg>{t.cvPdf}
           </a>
         </div>
+        <p class="hidden items-center gap-2.5 font-mono text-xs text-dim sm:flex" aria-hidden="true">
+          <span class="rounded-md border border-[#3a2216] bg-[#1d110c] px-2 py-1 text-[#ff8a5c]"><span data-blocked>0</span></span>
+          {t.packets}
+        </p>
       </div>
 
       <div data-terminal={termData} class="min-w-0 flex-[1_1_400px] cursor-text overflow-hidden rounded-[18px] border border-[#1f2622] bg-[#0e1210] shadow-[0_40px_80px_-30px_rgba(0,0,0,.8)]">
@@ -196,6 +212,25 @@ const serviceIcons = [
       </div>
       <p class="max-w-[420px] text-base leading-relaxed text-muted">{t.s4Lead}</p>
     </div>
+    <div data-graph={graphData} class="reveal flex flex-col gap-4 rounded-2xl border border-line bg-[#0b0e0c] p-4 sm:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <h3 class="font-display text-xl font-semibold">{t.graph.title}</h3>
+        <span class="font-mono text-xs text-faint">{t.graph.hint}</span>
+      </div>
+      <canvas class="block h-[520px] w-full" role="img" aria-label={t.graph.aria}></canvas>
+      <div data-g-panel hidden class="rounded-xl border border-line-2 bg-panel p-4">
+        <span class="font-mono text-[11px] text-faint">{t.graph.usedIn}</span>
+        <p data-g-title class="font-display text-lg font-semibold text-accent"></p>
+        <ul data-g-list class="mt-2 flex flex-wrap gap-x-5 gap-y-1.5 text-[14px]"></ul>
+      </div>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs text-dim">
+        {Object.entries(trackColors).map(([k, col]) => <span class="flex items-center gap-2"><span class={`h-2.5 w-2.5 ${k === 'Products' ? 'bg-accent' : k === 'DevSecOps' ? 'bg-[#5eead4]' : k === 'Cloud & SRE' ? 'bg-amber' : 'bg-[#ff8a5c]'}`}></span>{trackLabel[k]}</span>)}
+        <span class="flex items-center gap-2"><span class="h-3 w-3 rounded-full border-[1.5px] border-accent"></span>{t.graph.toolLegend}</span>
+      </div>
+      <div role="group" aria-label={t.graph.chipsLabel} class="flex flex-wrap gap-2">
+        {graphTools.map(([tool, n]) => <button type="button" data-g-tool={tool} aria-pressed="false" class="min-h-9 cursor-pointer rounded-md border border-line-2 px-2.5 font-mono text-[11px] text-fg-2 hover:border-accent aria-pressed:border-accent aria-pressed:bg-[#17200f] aria-pressed:text-accent">{tool} <span class="text-faint">{n}</span></button>)}
+      </div>
+    </div>
     <div class="grid grid-cols-1 gap-3.5 md:grid-cols-2 lg:grid-cols-3">
       {toolbox.map((g) => (
         <div class="reveal flex flex-col gap-4 rounded-2xl border border-line bg-panel p-6">
@@ -275,6 +310,7 @@ const serviceIcons = [
         <span class="eyebrow">{t.s7}</span>
         <h2 class="font-display text-[clamp(40px,6vw,84px)] font-extrabold leading-[.95] tracking-[-0.03em]">{t.s7Title}</h2>
         <p class="max-w-[520px] text-lg leading-relaxed text-muted">{t.s7Lead}</p>
+        <a href={path(lang, '/match')} class="self-start font-mono text-sm text-accent hover:underline">{t.matchCta}</a>
       </div>
       <div class="relative flex min-w-0 flex-[1_1_300px] flex-col gap-3">
         <a href={`mailto:${person.email}`} class="flex min-h-14 items-center justify-between gap-3 rounded-xl bg-accent px-5 font-semibold text-ink [overflow-wrap:anywhere] hover:bg-accent-2">{person.email}<Fragment set:html={ext} /></a>

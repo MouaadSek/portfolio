@@ -1,0 +1,7 @@
+# Hello, crawler. Humans are welcome too.
+# CTF 2/5: MSK{r0b0ts_kn0w_s3cr3ts}
+User-agent: *
+Allow: /
+Disallow: /ops-console/
+
+Sitemap: https://mouaadsek.vercel.app/sitemap-index.xml

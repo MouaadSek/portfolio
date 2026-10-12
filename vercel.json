@@ -32,6 +32,10 @@
         {
           "key": "Cross-Origin-Opener-Policy",
           "value": "same-origin"
+        },
+        {
+          "key": "X-CTF-Flag",
+          "value": "4/5 MSK{h34d3rs_t3ll_st0r13s}"
         }
       ]
     }

@@ -1,0 +1,151 @@
+---
+import Base from '../layouts/Base.astro';
+import { content, path, type Lang } from '../i18n';
+import { skills, examples } from '../data/match';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const { projects } = content(lang);
+
+const t = {
+  en: {
+    title: 'Recruiter match · Mouaad Sekkouri',
+    desc: 'Paste a job offer and see how Mouaad Sekkouri fits: matching skills, relevant projects, honest gaps.',
+    eyebrow: 'FOR RECRUITERS',
+    h1a: 'Does my profile', h1b: 'fit your offer?',
+    lead: 'Paste the job description. You get the skills I can prove, the projects that show them, what I have not covered yet, and a short summary you can drop straight into your notes.',
+    label: 'Job offer', placeholder: 'Paste the job description here (French or English)...',
+    run: 'Analyze the fit', example: 'Try with an example offer',
+    privacy: 'Analyzed in your browser. The text is never sent or stored.',
+    scoreTitle: 'Fit score', matched: 'Skills I can show', legend: 'Solid: used in a project or job. Dashed: labs and coursework.',
+    gaps: 'Not covered yet', gapsNote: 'Listed on purpose: better you hear it from me.',
+    projects: 'Projects that prove it', avail: 'Availability', summary: 'Summary for your notes', copy: 'Copy summary', back: 'Back to the portfolio',
+    js: {
+      tooShort: 'Paste a bit more of the offer (at least a few lines) to get a useful result.',
+      noHits: 'No technical skill recognized in this text. Is it the full job description?',
+      scoreLine: '{n} of the {total} skills detected in the offer are covered.',
+      availAlt: 'Available now for an alternance.',
+      availStage: '6-month end-of-studies internship from March 2027.',
+      availCdi: 'Graduating in 2027, open to a permanent role after that.',
+      availBe: 'Based in Lille, an hour from Brussels: open to Belgium.',
+      availMobile: 'Mobile across France.',
+      sumCover: 'Mouaad Sekkouri (M2 Cybersecurity, SUPINFO Lille) covers {n} of the {total} skills this offer asks for.',
+      sumShipped: 'Hands-on, in projects or at work: {list}.',
+      sumLabs: 'Practiced in labs and coursework: {list}.',
+      sumGaps: 'Not covered yet: {list}.',
+      sumProjects: 'Most relevant work: {list}.',
+      sumLink: 'Portfolio and case studies: {site}',
+      copied: 'Copied',
+    },
+  },
+  fr: {
+    title: 'Adéquation avec votre offre · Mouaad Sekkouri',
+    desc: 'Collez une offre d’emploi et voyez l’adéquation avec le profil de Mouaad Sekkouri : compétences, projets, manques.',
+    eyebrow: 'POUR LES RECRUTEURS',
+    h1a: 'Mon profil correspond-il', h1b: 'à votre offre ?',
+    lead: 'Collez la description du poste. Vous obtenez les compétences que je peux prouver, les projets qui les montrent, ce que je ne couvre pas encore, et un résumé court à coller dans vos notes.',
+    label: 'Offre d’emploi', placeholder: 'Collez la description du poste ici (français ou anglais)...',
+    run: 'Analyser l’adéquation', example: 'Essayer avec une offre d’exemple',
+    privacy: 'Analysé dans votre navigateur. Le texte n’est jamais envoyé ni stocké.',
+    scoreTitle: 'Score d’adéquation', matched: 'Compétences que je peux montrer', legend: 'Plein : utilisé en projet ou en poste. Pointillé : labs et cours.',
+    gaps: 'Pas encore couvert', gapsNote: 'Affiché volontairement : mieux vaut l’entendre de moi.',
+    projects: 'Les projets qui le prouvent', avail: 'Disponibilité', summary: 'Résumé pour vos notes', copy: 'Copier le résumé', back: 'Retour au portfolio',
+    js: {
+      tooShort: 'Collez un peu plus de l’offre (quelques lignes au moins) pour un résultat utile.',
+      noHits: 'Aucune compétence technique reconnue dans ce texte. Est-ce bien la description complète du poste ?',
+      scoreLine: '{n} des {total} compétences détectées dans l’offre sont couvertes.',
+      availAlt: 'Disponible en alternance dès maintenant.',
+      availStage: 'Stage de fin d’études de 6 mois dès mars 2027.',
+      availCdi: 'Diplômé en 2027, ouvert à un CDI ensuite.',
+      availBe: 'Basé à Lille, à une heure de Bruxelles : ouvert à la Belgique.',
+      availMobile: 'Mobile partout en France.',
+      sumCover: 'Mouaad Sekkouri (M2 Cybersécurité, SUPINFO Lille) couvre {n} des {total} compétences demandées par cette offre.',
+      sumShipped: 'En pratique, en projet ou en poste : {list}.',
+      sumLabs: 'Pratiqué en labs et en cours : {list}.',
+      sumGaps: 'Pas encore couvert : {list}.',
+      sumProjects: 'Travaux les plus pertinents : {list}.',
+      sumLink: 'Portfolio et études de cas : {site}',
+      copied: 'Copié',
+    },
+  },
+}[lang];
+
+const data = JSON.stringify({
+  lang,
+  site: `mouaadsek.vercel.app${lang === 'fr' ? '/fr' : ''}`,
+  skills: skills.map((s) => ({ k: s.k, label: s[lang], re: s.re, level: s.level, proj: s.proj })),
+  projects: projects.map((p) => ({ id: p.id, title: p.title, context: p.context, href: p.slug ? path(lang, `/work/${p.slug}`) : p.href ?? path(lang, '/#index') })),
+  example: examples[lang],
+  t: t.js,
+});
+---
+<Base lang={lang} title={t.title} description={t.desc}>
+  <section class="relative overflow-hidden">
+    <div class="grid-bg pointer-events-none absolute inset-0 h-[600px]" aria-hidden="true"></div>
+    <div class="wrap relative flex flex-col gap-6 pb-12 pt-16 sm:pt-20">
+      <span class="eyebrow">{t.eyebrow}</span>
+      <h1 class="max-w-[1000px] font-display text-[clamp(40px,6vw,84px)] font-extrabold leading-[.98] tracking-[-0.03em]">{t.h1a}<br /><span class="text-accent">{t.h1b}</span></h1>
+      <p class="max-w-[720px] text-xl leading-relaxed text-muted">{t.lead}</p>
+    </div>
+  </section>
+
+  <div class="wrap flex flex-col gap-10 pb-24" data-match={data}>
+    <div class="flex flex-col gap-4 rounded-2xl border border-line bg-panel p-5 sm:p-6">
+      <label for="m-input" class="font-mono text-xs text-dim">{t.label}</label>
+      <textarea id="m-input" data-m-input rows="9" placeholder={t.placeholder} class="w-full resize-y rounded-xl border border-line-2 bg-[#0b0e0c] p-4 text-[15px] leading-relaxed text-fg placeholder:text-faint focus:border-accent focus:outline-none"></textarea>
+      <div class="flex flex-wrap items-center gap-3">
+        <button type="button" data-m-run class="btn-primary min-h-12 px-5 text-[15px]">{t.run}</button>
+        <button type="button" data-m-example class="btn-ghost min-h-12 px-5 text-[15px]">{t.example}</button>
+        <span class="flex items-center gap-2 font-mono text-xs text-faint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>{t.privacy}</span>
+      </div>
+      <p data-m-empty hidden class="font-mono text-sm text-amber"></p>
+    </div>
+
+    <section data-m-results hidden class="flex scroll-mt-24 flex-col gap-6" aria-live="polite">
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-[320px_1fr]">
+        <div class="flex flex-col items-center justify-center gap-4 rounded-2xl border border-line bg-panel p-6 text-center">
+          <span class="font-mono text-xs text-dim">{t.scoreTitle}</span>
+          <div class="relative h-[132px] w-[132px]">
+            <svg viewBox="0 0 120 120" class="h-full w-full -rotate-90" aria-hidden="true">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#1a201c" stroke-width="10"></circle>
+              <circle data-m-ring cx="60" cy="60" r="52" fill="none" stroke="#b8f25a" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 400" class="transition-[stroke-dasharray] duration-700"></circle>
+            </svg>
+            <span data-m-score class="absolute inset-0 flex items-center justify-center font-display text-4xl font-extrabold">0%</span>
+          </div>
+          <p data-m-scoreline class="text-[15px] text-muted"></p>
+        </div>
+        <div class="flex flex-col gap-4 rounded-2xl border border-line bg-panel p-6">
+          <h2 class="font-display text-2xl font-semibold">{t.matched}</h2>
+          <ul data-m-chips class="flex flex-wrap gap-2"></ul>
+          <p class="font-mono text-xs text-faint">{t.legend}</p>
+          <div data-m-gaps hidden class="mt-2 flex flex-col gap-2 border-t border-line pt-4">
+            <h3 class="font-display text-lg font-semibold">{t.gaps}</h3>
+            <ul data-m-gaplist class="flex flex-wrap gap-2"></ul>
+            <p class="font-mono text-xs text-faint">{t.gapsNote}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_360px]">
+        <div class="flex flex-col gap-4">
+          <h2 class="font-display text-2xl font-semibold">{t.projects}</h2>
+          <div data-m-projects class="grid grid-cols-1 gap-3 sm:grid-cols-3"></div>
+        </div>
+        <div class="flex flex-col gap-3 rounded-2xl border border-line bg-panel p-6">
+          <h2 class="font-display text-xl font-semibold">{t.avail}</h2>
+          <ul data-m-avail class="flex flex-col gap-2"></ul>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3 rounded-2xl border border-line-2 bg-[#0f1411] p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="font-display text-xl font-semibold">{t.summary}</h2>
+          <button type="button" data-m-copy class="min-h-10 cursor-pointer rounded-lg border border-line-2 px-3 font-mono text-xs text-fg-2 hover:border-accent hover:text-accent">{t.copy}</button>
+        </div>
+        <p data-m-summary class="text-[15px] leading-relaxed text-fg-2"></p>
+      </div>
+    </section>
+
+    <a href={path(lang, '/')} class="inline-flex min-h-11 items-center gap-2 self-start font-mono text-sm text-accent hover:underline">← {t.back}</a>
+  </div>
+</Base>

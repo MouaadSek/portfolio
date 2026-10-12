@@ -1,0 +1,22 @@
+// Which tools each project actually uses. Drives the skills constellation on the home page.
+export const projectTools: Record<string, string[]> = {
+  'P-01': ['Next.js', 'JS / TS', 'PostgreSQL', 'Payload CMS'],
+  'P-02': ['Python', 'FastAPI', 'Playwright', 'Electron'],
+  'P-03': ['Next.js', 'JS / TS', 'Supabase', 'PostgreSQL', 'Docker'],
+  'P-04': ['Electron', 'JS / TS'],
+  'P-05': ['Next.js', 'JS / TS', 'Payload CMS', 'PostgreSQL', 'Docker'],
+  'P-06': ['Python', 'FastAPI', 'PostgreSQL'],
+  'P-07': ['Python', 'Playwright'],
+  'P-08': ['Next.js', 'JS / TS', 'Docker'],
+  'P-09': ['Kubernetes', 'Docker', 'GitLab CI', 'Trivy', 'OPA Gatekeeper', 'Python'],
+  'P-10': ['Kubernetes', 'Docker', 'GitLab CI', 'Python'],
+  'P-11': ['GitLab CI', 'Docker', 'Ansible'],
+  'P-12': ['Kubernetes', 'Docker'],
+  'P-13': ['Ansible', 'Terraform', 'Azure', 'Linux'],
+  'P-14': ['Prometheus / Grafana', 'Docker', 'Linux'],
+  'P-15': ['Terraform', 'Ansible', 'Azure'],
+  'P-16': ['Nmap', 'Windows'],
+  'P-17': ['Wireshark', 'Suricata', 'Nmap', 'Linux'],
+  'P-18': ['Active Directory', 'Windows'],
+  'P-19': ['OpenSSL', 'Linux'],
+};

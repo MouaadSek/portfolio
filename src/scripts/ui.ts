@@ -1,4 +1,10 @@
 // All interactivity lives here: no inline scripts, so a strict CSP holds.
+import { initPackets } from './packets';
+import { initHackMe } from './hackme';
+import { initMatch } from './match';
+import { initGraph } from './graph';
+import { submit as ctfSubmit, progress as ctfProgress, TOTAL as CTF_TOTAL, consoleHint } from './ctf';
+consoleHint();
 const root = document.documentElement;
 root.classList.add('js');
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -166,6 +172,11 @@ if (termEl) {
     const b = document.createElement('span'); b.className = 'text-muted'; b.textContent = right;
     el.append(a, b); out.appendChild(el);
   };
+  const link = (text: string, href: string) => {
+    const el = document.createElement('div');
+    const a = document.createElement('a'); a.href = href; a.className = 'text-accent underline'; a.textContent = text;
+    el.appendChild(a); out.appendChild(el);
+  };
   const go = (href: string, delay = 450) => setTimeout(() => { window.location.href = href; }, delay);
 
   const commands: Record<string, (args: string[]) => void> = {
@@ -195,6 +206,30 @@ if (termEl) {
     lang: () => { line(T.lang, 'text-accent'); go(d.alt); },
     security: () => { line(T.security, 'text-accent'); go(`${d.home === '/' ? '' : '/fr'}/security`); },
     clear: () => { out.innerHTML = ''; },
+    ctf: () => { (T.ctfIntro as string[]).forEach((l, i) => line(fill(l, { n: String(ctfProgress().length), total: String(CTF_TOTAL) }), i === 0 ? 'text-accent' : '')); },
+    flags: () => commands.ctf([]),
+    hint: (args) => {
+      const n = Number(args[0]);
+      if (!n || n < 1 || n > CTF_TOTAL) return line(T.ctfHintCmd, 'text-faint');
+      line((T.hints as string[])[n - 1], 'text-amber');
+    },
+    submit: async (args) => {
+      const flag = args.join(' ');
+      if (!flag) return line(T.submitUsage, 'text-faint');
+      const r = await ctfSubmit(flag);
+      const vars = { n: String(r.total), total: String(CTF_TOTAL) };
+      if (r.status === 'wrong') line(T.wrong, 'text-[#ff8a5c]');
+      else if (r.status === 'dup') line(fill(T.dup, vars), 'text-faint');
+      else {
+        line(fill(T.captured, vars), 'text-accent');
+        if (r.total === CTF_TOTAL) {
+          (T.done as string[]).forEach((l) => line(l, 'text-fg'));
+          link(T.doneLink, `mailto:${d.email}?subject=${encodeURIComponent('CTF: I found all 5 flags')}`);
+        }
+      }
+      out.scrollTop = out.scrollHeight;
+    },
+    match: () => { line(T.matchGo ?? 'opening recruiter match...', 'text-accent'); go(`${d.home === '/' ? '' : '/fr'}/match`); },
     sudo: () => line(T.sudo, 'text-[#ff8a5c]'),
     rm: () => line(T.rm, 'text-[#ff8a5c]'),
     nmap: () => (T.nmap as string[]).forEach((l, i) => line(l, i === 2 ? 'text-faint' : '')),
@@ -202,7 +237,7 @@ if (termEl) {
     coffee: () => line(T.coffee, 'text-amber'),
     hello: () => line(T.hello), hi: () => line(T.hello), bonjour: () => line(T.hello), salut: () => line(T.hello),
   };
-  const visible = ['help', 'whoami', 'projects', 'open', 'skills', 'cv', 'contact', 'hire', 'lang', 'clear', 'security'];
+  const visible = ['help', 'whoami', 'projects', 'open', 'skills', 'cv', 'contact', 'hire', 'lang', 'clear', 'security', 'ctf', 'submit', 'hint', 'match'];
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -231,3 +266,19 @@ if (termEl) {
   });
   termEl.addEventListener('click', (e) => { if (!(e.target as HTMLElement).closest('a,button') && !window.getSelection()?.toString()) input.focus({ preventScroll: true }); });
 }
+
+/* ---------- hero packet field ---------- */
+const packetCanvas = document.querySelector<HTMLCanvasElement>('[data-packets]');
+if (packetCanvas) initPackets(packetCanvas, document.querySelector('[data-blocked]'), reduced);
+
+/* ---------- try to hack me ---------- */
+const hackme = document.querySelector<HTMLElement>('[data-hackme]');
+if (hackme) initHackMe(hackme);
+
+/* ---------- recruiter match ---------- */
+const matchRoot = document.querySelector<HTMLElement>('[data-match]');
+if (matchRoot) initMatch(matchRoot);
+
+/* ---------- skills constellation ---------- */
+const graphRoot = document.querySelector<HTMLElement>('[data-graph]');
+if (graphRoot) initGraph(graphRoot, reduced);
