@@ -3,13 +3,18 @@ import Base from '../layouts/Base.astro';
 import Art from '../components/Art.astro';
 import { ui, path, type Lang } from '../i18n';
 import type { CaseStudy } from '../data/cases';
+import CodeBlock from '../components/CodeBlock.astro';
+import { evidence } from '../data/evidence';
 
 interface Props { c: CaseStudy; next: CaseStudy; lang: Lang }
 const { c, next, lang } = Astro.props;
 const t = ui[lang];
 const levelClass = (v: string) =>
   ['CRITICAL', 'BLOCK', 'DENY', 'CRITIQUE', 'BLOQUÉ', 'REFUSÉ'].includes(v) ? 'text-[#ff8a5c]' : ['HIGH', 'ÉLEVÉ'].includes(v) ? 'text-amber' : ['HARDENED', 'DURCI'].includes(v) ? 'text-accent' : 'text-muted';
-const sections = [t.secContext, t.secApproach, c.tableTitle, t.secOutcome, t.secLessons];
+const ev = evidence[c.slug] ?? [];
+const sections = [t.secContext, t.secApproach, c.tableTitle, ...(ev.length ? [t.secEvidence] : []), t.secOutcome, t.secLessons];
+const n = (i: number) => String(i).padStart(2, '0');
+const base = ev.length ? 1 : 0;
 ---
 <Base lang={lang} title={`${c.title} · ${t.caseFile} ${c.id} · Mouaad Sekkouri`} description={c.outcome}>
   <div class="wrap flex flex-wrap items-center justify-between gap-4 pt-8">
@@ -87,8 +92,24 @@ const sections = [t.secContext, t.secApproach, c.tableTitle, t.secOutcome, t.sec
         </div>
       </section>
 
+      {ev.length > 0 && (
       <section id="s4" class="reveal flex scroll-mt-24 flex-col gap-6">
-        <span class="eyebrow">04 / {t.secOutcome.toUpperCase()}</span>
+        <span class="eyebrow">04 / {t.secEvidence.toUpperCase()}</span>
+        <h2 class="font-display text-4xl font-bold">{t.evidenceTitle}</h2>
+        <p class="text-lg leading-[1.7] text-muted">{t.evidenceLead}</p>
+        <div class="flex flex-col gap-8">
+          {ev.map((e) => (
+            <div class="flex flex-col gap-3">
+              <CodeBlock file={e.file} lang={e.lang} code={e.code} copyLabel={t.copy} />
+              <p class="text-[15px] leading-relaxed text-dim">{e.caption[lang]}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      )}
+
+      <section id={`s${4 + base}`} class="reveal flex scroll-mt-24 flex-col gap-6">
+        <span class="eyebrow">{n(4 + base)} / {t.secOutcome.toUpperCase()}</span>
         <h2 class="font-display text-4xl font-bold">{t.results}</h2>
         <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
           {c.results.map((r) => (
@@ -100,8 +121,8 @@ const sections = [t.secContext, t.secApproach, c.tableTitle, t.secOutcome, t.sec
         </div>
       </section>
 
-      <section id="s5" class="reveal flex scroll-mt-24 flex-col gap-4">
-        <span class="eyebrow">05 / {t.secLessons.toUpperCase()}</span>
+      <section id={`s${5 + base}`} class="reveal flex scroll-mt-24 flex-col gap-4">
+        <span class="eyebrow">{n(5 + base)} / {t.secLessons.toUpperCase()}</span>
         <h2 class="font-display text-4xl font-bold">{t.differently}</h2>
         <p class="text-lg leading-[1.7] text-muted">{c.lessons}</p>
       </section>

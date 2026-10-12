@@ -13,7 +13,7 @@ const copy = {
     title: 'CV · Mouaad Sekkouri', desc: 'CV of Mouaad Sekkouri, M2 Cybersecurity, Cloud Security and DevSecOps.',
     back: '← back to portfolio', download: 'Download PDF',
     headline: 'Cloud Security & DevSecOps · M2 Cybersecurity',
-    seeking: 'Looking for a 6-month end-of-studies internship from March 2027 · France or Belgium',
+    seeking: 'Available now for an alternance, or a 6-month internship from March 2027 · Mobile across France',
     h: { profile: 'Profile', exp: 'Experience', proj: 'Selected projects', projNote: `case studies on ${site}`, skills: 'Skills', edu: 'Education', cert: 'Certification', lang: 'Languages' },
     profile: 'Cybersecurity master’s student with four years in IT (QA, then network security support) and a rare mix: I audit and harden systems, and I also ship real products, one of them live in production. I care about security that teams can actually live with: gates in CI, policies in the cluster, evidence behind every finding.',
     experience: [
@@ -57,7 +57,7 @@ const copy = {
     title: 'CV · Mouaad Sekkouri', desc: 'CV de Mouaad Sekkouri, M2 Cybersécurité, sécurité cloud et DevSecOps.',
     back: '← retour au portfolio', download: 'Télécharger le PDF',
     headline: 'Sécurité Cloud & DevSecOps · M2 Cybersécurité',
-    seeking: 'Recherche un stage de fin d’études de 6 mois dès mars 2027 · France ou Belgique',
+    seeking: 'Disponible en alternance dès maintenant, ou en stage de 6 mois dès mars 2027 · Mobile partout en France',
     h: { profile: 'Profil', exp: 'Expérience', proj: 'Projets choisis', projNote: `études de cas sur ${site}`, skills: 'Compétences', edu: 'Formation', cert: 'Certification', lang: 'Langues' },
     profile: 'Étudiant en master cybersécurité avec quatre ans d’expérience IT (QA, puis support réseau et sécurité) et un profil rare : j’audite et je durcis des systèmes, et je livre aussi de vrais produits, dont un en production. Je défends une sécurité avec laquelle les équipes peuvent vivre : des contrôles dans la CI, des politiques dans le cluster, une preuve derrière chaque constat.',
     experience: [
@@ -117,7 +117,7 @@ const copy = {
           <p class="mt-1 text-[10px] text-[#a9b5ae]">{copy.seeking}</p>
         </div>
         <ul class="flex shrink-0 flex-col items-end gap-0.5 font-mono text-[9px] text-[#c4cec8]">
-          <li>Lille, France</li>
+          <li>{lang === 'fr' ? 'Lille, mobile France' : 'Lille, mobile in France'}</li>
           <li>{person.email}</li>
           <li>{site}</li>
           <li>linkedin.com/in/sekkouri</li>

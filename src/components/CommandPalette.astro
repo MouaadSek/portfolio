@@ -14,6 +14,7 @@ const items: Item[] = [
   { group: t.goto, label: t.about, hint: t.section, href: `${home}#about` },
   { group: t.goto, label: t.services, hint: t.section, href: `${home}#services` },
   { group: t.goto, label: t.contact, hint: t.section, href: `${home}#contact` },
+  { group: t.goto, label: t.security, hint: t.page, href: path(lang, '/security') },
   ...cases.map((c) => ({ group: t.cases, label: c.title, hint: c.id, href: path(lang, `/work/${c.slug}`) })),
   ...projects.filter((p) => !p.slug).map((p) => ({ group: t.projects, label: p.title, hint: trackLabel[p.track], href: p.href ?? `${home}#index` })),
   { group: t.actions, label: t.openCv, hint: t.page, href: path(lang, '/cv') },

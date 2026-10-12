@@ -1,0 +1,166 @@
+---
+import Base from '../layouts/Base.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import { ui, path, type Lang } from '../i18n';
+import vercel from '../../vercel.json';
+import pkg from '../../package.json';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+const site = 'https://mouaadsek.vercel.app';
+
+// Single source of truth: the headers actually deployed.
+const headers: { key: string; value: string }[] = vercel.headers[0].headers;
+const csp = headers.find((h) => h.key === 'Content-Security-Policy')!.value;
+const cspPretty = csp.split(';').map((d) => d.trim()).filter(Boolean).join(';\n');
+const deps = Object.keys(pkg.dependencies ?? {}).length;
+
+const c = {
+  en: {
+    title: 'How this site is built · Mouaad Sekkouri',
+    desc: 'The security choices behind this portfolio: strict CSP, security headers, zero trackers, static output.',
+    eyebrow: 'SECURITY / BUILT-IN',
+    h1a: 'This site is a', h1b: 'portfolio piece too.',
+    lead: 'A security portfolio should practice what it preaches. Every choice below is enforced by the build or the hosting config, not by good intentions. Check it yourself in one command.',
+    scoreHead: 'Controls in place',
+    controls: [
+      ['Content-Security-Policy', 'Strict, no unsafe-inline, no unsafe-eval', 'HTTP'],
+      ['Strict-Transport-Security', '2 years, subdomains, preload', 'HTTP'],
+      ['X-Frame-Options + frame-ancestors', 'DENY: the site cannot be framed', 'HTTP'],
+      ['X-Content-Type-Options', 'nosniff', 'HTTP'],
+      ['Referrer-Policy', 'strict-origin-when-cross-origin', 'HTTP'],
+      ['Permissions-Policy', 'camera, microphone, geolocation off', 'HTTP'],
+      ['Cross-Origin-Opener-Policy', 'same-origin', 'HTTP'],
+      ['Third-party requests', '0: fonts self-hosted, no CDN, no embeds', 'Page'],
+      ['Cookies and trackers', '0: no analytics, no consent banner needed', 'Privacy'],
+      ['Server-side attack surface', 'None: static HTML, no backend, no database, no forms', 'Architecture'],
+      ['Known vulnerabilities', '0 reported by npm audit', 'Supply chain'],
+      ['Dependencies', `${deps} direct packages, all used at build time only`, 'Supply chain'],
+    ],
+    cspHead: 'The actual policy',
+    cspLead: 'Read at build time from the same vercel.json that the hosting platform applies, so this page cannot drift from production.',
+    howHead: 'Design decisions',
+    how: [
+      ['No inline code, anywhere', 'All JavaScript is bundled into one external file. Code samples are highlighted at build time with CSS classes instead of inline styles. Dynamic values (the card spotlight) go through the CSSOM, which CSP allows. Result: script-src and style-src can stay at self.'],
+      ['Static by design', 'There is nothing to hack on the server because there is no server logic: every page is pre-rendered HTML. Contact goes through mailto, so no form endpoint to spam or inject.'],
+      ['Nothing third-party', 'Fonts are bundled with the site, there are no analytics, no social widgets and no CDN scripts. Visitors are not tracked, and a compromised third party cannot inject code here.'],
+      ['Supply chain hygiene', 'A small dependency tree, a committed lockfile, and npm audit kept at 0. Astro was upgraded across two major versions to clear a critical advisory before it could matter.'],
+    ],
+    verifyHead: 'Verify it yourself',
+    verifyLead: 'Headers are public. These commands and scanners show exactly what the browser receives.',
+    scanners: [['securityheaders.com', `https://securityheaders.com/?q=${encodeURIComponent(site)}&followRedirects=on`], ['Mozilla HTTP Observatory', `https://developer.mozilla.org/en-US/observatory/analyze?host=mouaadsek.vercel.app`]],
+    limitsHead: 'Known limits',
+    limits: [
+      'The site runs on a shared vercel.app subdomain until a custom domain is set up, so trust ultimately sits with the hosting provider.',
+      'My email address is published on purpose: being reachable is the point of a portfolio.',
+      'HSTS preload is declared in the header, but a domain only enters browser preload lists once it is submitted with a domain I own.',
+    ],
+    back: 'Back to the portfolio',
+  },
+  fr: {
+    title: 'Comment ce site est construit · Mouaad Sekkouri',
+    desc: 'Les choix de sécurité derrière ce portfolio : CSP stricte, en-têtes de sécurité, zéro traceur, site statique.',
+    eyebrow: 'SÉCURITÉ / INTÉGRÉE',
+    h1a: 'Ce site est aussi', h1b: 'une pièce du portfolio.',
+    lead: 'Un portfolio de sécurité doit appliquer ce qu’il défend. Chaque choix ci-dessous est imposé par le build ou la configuration d’hébergement, pas par de bonnes intentions. Vérifiable en une commande.',
+    scoreHead: 'Contrôles en place',
+    controls: [
+      ['Content-Security-Policy', 'Stricte, sans unsafe-inline ni unsafe-eval', 'HTTP'],
+      ['Strict-Transport-Security', '2 ans, sous-domaines, preload', 'HTTP'],
+      ['X-Frame-Options + frame-ancestors', 'DENY : le site ne peut pas être encadré', 'HTTP'],
+      ['X-Content-Type-Options', 'nosniff', 'HTTP'],
+      ['Referrer-Policy', 'strict-origin-when-cross-origin', 'HTTP'],
+      ['Permissions-Policy', 'caméra, micro, géolocalisation désactivés', 'HTTP'],
+      ['Cross-Origin-Opener-Policy', 'same-origin', 'HTTP'],
+      ['Requêtes tierces', '0 : polices hébergées sur le site, pas de CDN, pas d’intégrations', 'Page'],
+      ['Cookies et traceurs', '0 : pas d’analytics, pas besoin de bandeau de consentement', 'Vie privée'],
+      ['Surface d’attaque serveur', 'Aucune : HTML statique, pas de backend, pas de base, pas de formulaire', 'Architecture'],
+      ['Vulnérabilités connues', '0 signalée par npm audit', 'Supply chain'],
+      ['Dépendances', `${deps} paquets directs, tous utilisés au build`, 'Supply chain'],
+    ],
+    cspHead: 'La politique réelle',
+    cspLead: 'Lue au moment du build depuis le même vercel.json que celui appliqué par l’hébergeur : cette page ne peut pas diverger de la production.',
+    howHead: 'Choix de conception',
+    how: [
+      ['Aucun code inline, nulle part', 'Tout le JavaScript est regroupé dans un seul fichier externe. Les extraits de code sont colorés au build avec des classes CSS plutôt que des styles inline. Les valeurs dynamiques (l’effet de lumière sur les cartes) passent par le CSSOM, autorisé par la CSP. Résultat : script-src et style-src restent à self.'],
+      ['Statique par conception', 'Rien à attaquer côté serveur, car il n’y a pas de logique serveur : chaque page est du HTML pré-généré. Le contact passe par mailto, donc aucun endpoint de formulaire à spammer ou à injecter.'],
+      ['Rien de tiers', 'Les polices sont livrées avec le site, sans analytics, sans widgets sociaux ni scripts CDN. Les visiteurs ne sont pas suivis, et un tiers compromis ne peut pas injecter de code ici.'],
+      ['Hygiène de la supply chain', 'Un arbre de dépendances réduit, un lockfile versionné et npm audit maintenu à 0. Astro a été mis à jour de deux versions majeures pour éliminer une alerte critique avant qu’elle ne compte.'],
+    ],
+    verifyHead: 'Vérifiez vous-même',
+    verifyLead: 'Les en-têtes sont publics. Ces commandes et scanners montrent exactement ce que reçoit le navigateur.',
+    scanners: [['securityheaders.com', `https://securityheaders.com/?q=${encodeURIComponent(site)}&followRedirects=on`], ['Mozilla HTTP Observatory', `https://developer.mozilla.org/fr/observatory/analyze?host=mouaadsek.vercel.app`]],
+    limitsHead: 'Limites connues',
+    limits: [
+      'Le site tourne sur un sous-domaine partagé vercel.app en attendant un domaine personnalisé : la confiance repose in fine sur l’hébergeur.',
+      'Mon adresse email est publiée volontairement : être joignable est le but d’un portfolio.',
+      'Le preload HSTS est déclaré dans l’en-tête, mais un domaine n’entre dans les listes des navigateurs qu’une fois soumis avec un domaine qui m’appartient.',
+    ],
+    back: 'Retour au portfolio',
+  },
+}[lang];
+const curl = `$ curl -sI ${site} | grep -iE "content-security|strict-transport|x-frame|referrer|permissions"`;
+---
+<Base lang={lang} title={c.title} description={c.desc}>
+  <section class="relative overflow-hidden">
+    <div class="grid-bg pointer-events-none absolute inset-0 h-[600px]" aria-hidden="true"></div>
+    <div class="wrap relative flex flex-col gap-7 pb-16 pt-16 sm:pt-20">
+      <span class="eyebrow">{c.eyebrow}</span>
+      <h1 class="max-w-[1000px] font-display text-[clamp(42px,6vw,88px)] font-extrabold leading-[.98] tracking-[-0.03em]">{c.h1a}<br /><span class="text-accent">{c.h1b}</span></h1>
+      <p class="max-w-[720px] text-xl leading-relaxed text-muted">{c.lead}</p>
+    </div>
+  </section>
+
+  <section class="wrap flex flex-col gap-6 pb-20">
+    <h2 class="font-display text-4xl font-bold">{c.scoreHead}</h2>
+    <ul class="overflow-hidden rounded-2xl border border-line">
+      {c.controls.map(([k, v, layer]) => (
+        <li class="grid grid-cols-[24px_1fr] items-start gap-x-4 gap-y-1 border-b border-[#161c18] px-5 py-4 last:border-0 md:grid-cols-[24px_minmax(0,1.1fr)_minmax(0,1.6fr)_110px] md:items-center">
+          <span class="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#17200f] text-accent md:mt-0" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"></path></svg></span>
+          <span class="font-mono text-[13px] text-fg [overflow-wrap:anywhere]">{k}</span>
+          <span class="col-start-2 text-[15px] text-muted md:col-start-auto">{v}</span>
+          <span class="col-start-2 font-mono text-xs text-faint md:col-start-auto md:text-right">{layer}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap flex flex-col gap-5 pb-20">
+    <h2 class="font-display text-4xl font-bold">{c.cspHead}</h2>
+    <p class="max-w-[760px] text-lg leading-relaxed text-muted">{c.cspLead}</p>
+    <CodeBlock file="vercel.json → Content-Security-Policy" lang="plaintext" code={cspPretty} copyLabel={t.copy} />
+  </section>
+
+  <section class="wrap flex flex-col gap-8 pb-20">
+    <h2 class="font-display text-4xl font-bold">{c.howHead}</h2>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      {c.how.map(([h, p], i) => (
+        <div class="reveal spot card flex flex-col gap-3 p-7">
+          <span class="font-mono text-xs text-accent">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="font-display text-2xl font-semibold">{h}</h3>
+          <p class="text-[15px] leading-relaxed text-muted">{p}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap flex flex-col gap-5 pb-20">
+    <h2 class="font-display text-4xl font-bold">{c.verifyHead}</h2>
+    <p class="max-w-[760px] text-lg leading-relaxed text-muted">{c.verifyLead}</p>
+    <CodeBlock file="terminal" lang="bash" code={curl} copyLabel={t.copy} />
+    <div class="flex flex-wrap gap-3">
+      {c.scanners.map(([label, href]) => (
+        <a href={href} class="btn-ghost min-h-12 text-[15px]" rel="noopener">{label}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap flex flex-col gap-5 pb-24">
+    <h2 class="font-display text-4xl font-bold">{c.limitsHead}</h2>
+    <ul class="flex max-w-[860px] flex-col gap-3">
+      {c.limits.map((l) => <li class="relative pl-6 text-[17px] leading-relaxed text-muted before:absolute before:left-0 before:top-[11px] before:h-1.5 before:w-1.5 before:rounded-full before:bg-amber">{l}</li>)}
+    </ul>
+    <a href={path(lang, '/')} class="mt-6 inline-flex min-h-11 items-center gap-2 self-start font-mono text-sm text-accent hover:underline">← {c.back}</a>
+  </section>
+</Base>

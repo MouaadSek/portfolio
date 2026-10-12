@@ -12,6 +12,6 @@ const { person } = content(lang);
       <a href={person.linkedin} class="hover:text-accent">LinkedIn</a>
       <a href={path(lang, '/cv')} class="hover:text-accent">CV</a>
     </span>
-    <span>{ui[lang].footerNote}</span>
+    <a href={path(lang, '/security')} class="hover:text-accent">{ui[lang].footerNote}</a>
   </div>
 </footer>

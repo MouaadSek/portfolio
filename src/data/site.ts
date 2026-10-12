@@ -8,7 +8,7 @@ export const person = {
   email: 'mouaadsekkourii@gmail.com',
   linkedin: 'https://linkedin.com/in/sekkouri',
   github: 'https://github.com/MouaadSek',
-  availability: 'Open: 6-month end-of-studies internship from March 2027, plus freelance',
+  availability: 'Available now for an alternance · 6-month internship from March 2027 · mobile across France',
   languages: [
     { name: 'French', level: 'Bilingual' },
     { name: 'English', level: 'C1' },

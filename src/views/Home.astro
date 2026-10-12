@@ -8,6 +8,17 @@ const { lang } = Astro.props;
 const t = ui[lang];
 const { person, projects, tracks, toolbox, timeline, stats, cases, trackLabel } = content(lang);
 const nf = lang === 'fr' ? 'fr-FR' : 'en-US';
+const termData = JSON.stringify({
+  lang,
+  email: person.email,
+  cv: path(lang, '/cv'),
+  pdf: cvPdf(lang),
+  alt: lang === 'fr' ? '/' : '/fr/',
+  home: path(lang, '/'),
+  cases: cases.map((c) => ({ id: c.id.toLowerCase(), slug: c.slug, title: c.title, track: c.track, href: path(lang, `/work/${c.slug}`) })),
+  skills: toolbox.map((g) => ({ name: g.name, tools: g.shipped.slice(0, 6) })),
+  t: t.terminal,
+});
 
 const spans = ['lg:col-span-4', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-4', 'lg:col-span-3', 'lg:col-span-3'];
 const filters = ['All', ...tracks.map((x) => x.key)];
@@ -42,10 +53,11 @@ const serviceIcons = [
         </div>
       </div>
 
-      <div class="min-w-0 flex-[1_1_400px] overflow-hidden rounded-[18px] border border-[#1f2622] bg-[#0e1210] shadow-[0_40px_80px_-30px_rgba(0,0,0,.8)]">
+      <div data-terminal={termData} class="min-w-0 flex-[1_1_400px] cursor-text overflow-hidden rounded-[18px] border border-[#1f2622] bg-[#0e1210] shadow-[0_40px_80px_-30px_rgba(0,0,0,.8)]">
         <div class="flex items-center gap-2 border-b border-[#1a201c] px-4 py-3.5">
           <span class="h-[11px] w-[11px] rounded-full bg-[#2a332e]"></span><span class="h-[11px] w-[11px] rounded-full bg-[#2a332e]"></span><span class="h-[11px] w-[11px] rounded-full bg-[#2a332e]"></span>
           <span class="ml-2.5 font-mono text-xs text-faint">soc-console / whoami</span>
+          <span class="ml-auto hidden font-mono text-[11px] text-faint sm:inline">{t.terminal.hint}</span>
         </div>
         <div class="px-5 pb-6 pt-5 font-mono text-[14px] leading-[1.85] text-fg-2">
           <div><span class="text-accent">$</span> <span data-type="whoami --verbose">whoami --verbose</span></div>
@@ -61,7 +73,12 @@ const serviceIcons = [
           <div><span class="text-amber">[LIVE]</span> {t.term.live}</div>
           <div><span class="text-dim">[DONE]</span> {t.term.done}</div>
           <div><span class="text-accent">[OPEN]</span> {t.term.open}</div>
-          <div class="mt-2.5"><span class="text-accent">$</span> <span class="caret"></span></div>
+          <div><span class="text-accent">[OPEN]</span> {t.term.open2}</div>
+          <div data-term-out aria-live="polite" class="max-h-[260px] overflow-y-auto"></div>
+          <form data-term-form class="mt-2.5 flex items-center gap-2" autocomplete="off">
+            <label for="term-input" class="text-accent">$<span class="sr-only">{t.terminal.label}</span></label>
+            <input id="term-input" data-term-input type="text" spellcheck="false" autocapitalize="off" placeholder={t.terminal.placeholder} class="min-w-0 flex-1 bg-transparent text-base text-fg caret-accent sm:text-[14px] placeholder:text-faint focus:outline-none" />
+          </form>
         </div>
       </div>
     </div>
@@ -206,7 +223,12 @@ const serviceIcons = [
       <h2 class="h2">{t.s5Title}</h2>
       <p class="text-[17px] leading-relaxed text-muted">{t.about1}</p>
       <p class="text-[17px] leading-relaxed text-muted">{t.about2}</p>
-      <div class="flex aspect-[4/3] w-full max-w-[420px] items-center justify-center rounded-[18px] border border-dashed border-[#2a352f] bg-panel font-mono text-[13px] text-faint">{t.photo}</div>
+      <a href={path(lang, '/security')} class="spot card group mt-2 flex max-w-[460px] flex-col gap-3 p-6 text-fg">
+        <span class="flex items-center gap-2 font-mono text-xs text-accent"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"></path></svg>{t.securityCard.tag}</span>
+        <span class="font-display text-2xl font-semibold">{t.securityCard.title}</span>
+        <span class="text-[15px] leading-relaxed text-muted">{t.securityCard.text}</span>
+        <span class="font-mono text-xs text-accent transition-transform group-hover:translate-x-1">{t.securityCard.cta}</span>
+      </a>
     </div>
     <ol class="flex min-w-0 flex-[1.3_1_480px] flex-col" aria-label={t.timelineLabel}>
       {timeline.map((e) => (

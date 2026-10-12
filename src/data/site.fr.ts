@@ -4,7 +4,7 @@ import { projects as projectsEn, person as personEn, tracks as tracksEn } from '
 
 export const person = {
   ...personEn,
-  availability: 'Disponible : stage de fin d’études de 6 mois dès mars 2027, et missions freelance',
+  availability: 'Disponible en alternance dès maintenant · stage de 6 mois dès mars 2027 · mobile partout en France',
   languages: [
     { name: 'Français', level: 'Bilingue' },
     { name: 'Anglais', level: 'C1' },

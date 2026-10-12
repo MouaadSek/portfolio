@@ -90,3 +90,14 @@
 
 .cv-h { @apply mb-[2mm] flex items-baseline gap-2 border-b border-[#e3e8e5] pb-[1mm] font-display text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#0a0c0b]; }
 @media print { .no-print { display: none !important; } .cv-screen { padding: 0 !important; background: #fff !important; } }
+
+/* code evidence: highlight.js classes, theme matched to the site */
+.code { color: #c4cec8; tab-size: 2; }
+.code .hljs-comment, .code .hljs-quote { color: #6f7d75; font-style: italic; }
+.code .hljs-keyword, .code .hljs-selector-tag, .code .hljs-built_in, .code .hljs-type { color: #b8f25a; }
+.code .hljs-string, .code .hljs-regexp, .code .hljs-addition { color: #f5c76a; }
+.code .hljs-number, .code .hljs-literal, .code .hljs-symbol { color: #ff9f7a; }
+.code .hljs-attr, .code .hljs-attribute, .code .hljs-variable, .code .hljs-template-variable, .code .hljs-property { color: #8fd3c7; }
+.code .hljs-title, .code .hljs-title.function_, .code .hljs-section { color: #e8ede9; font-weight: 600; }
+.code .hljs-params, .code .hljs-meta { color: #a9b5ae; }
+.code .hljs-bullet, .code .hljs-punctuation { color: #8c9a92; }

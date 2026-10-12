@@ -15,12 +15,14 @@ Personal portfolio: Cloud Security / DevSecOps profile, 19 projects, 6 case stud
 |---|---|
 | Profile, projects, toolbox, timeline, stats | `src/data/site.ts` (EN), `src/data/site.fr.ts` (FR) |
 | The 6 case studies | `src/data/cases.ts` (EN), `src/data/cases.fr.ts` (FR) |
+| Code evidence shown in case studies | `src/data/evidence.ts` |
+| "How this site is built" page | `src/views/SecurityPage.astro` (reads headers from `vercel.json`) |
 | Interface strings, both languages | `src/i18n.ts` |
 | Page templates shared by EN and FR | `src/views/` |
 | Cover art drawn in code for each case | `src/components/Art.astro` |
 | Routes | `src/pages/` (English) and `src/pages/fr/` (French) |
 | CV (HTML, A4, both languages) | `src/views/CvPage.astro` |
-| Interactivity (command palette, filters, counters) | `src/scripts/ui.ts` |
+| Interactivity (terminal, command palette, filters, counters) | `src/scripts/ui.ts` |
 | Security headers | `vercel.json` |
 
 To change content, edit the two data files. Everything else reads from them.
@@ -36,6 +38,5 @@ To change content, edit the two data files. Everything else reads from them.
 
 ## To do
 
-- Replace the photo placeholder in the About section (`src/views/Home.astro`, search `t.photo`)
 - If a custom domain is bought: update `site` in `astro.config.mjs` and `site` in `src/views/CvPage.astro`, then rebuild the CV
 - Add real screenshots to case studies when available

@@ -1,0 +1,35 @@
+---
+// Build-time syntax highlighting with class names only (no inline styles), so the strict CSP holds.
+import hljs from 'highlight.js/lib/core';
+import yaml from 'highlight.js/lib/languages/yaml';
+import typescript from 'highlight.js/lib/languages/typescript';
+import python from 'highlight.js/lib/languages/python';
+import sql from 'highlight.js/lib/languages/sql';
+import bash from 'highlight.js/lib/languages/bash';
+import plaintext from 'highlight.js/lib/languages/plaintext';
+
+hljs.registerLanguage('yaml', yaml);
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('plaintext', plaintext);
+
+interface Props { file: string; lang: string; code: string; copyLabel: string }
+const { file, lang, code, copyLabel } = Astro.props;
+const html = hljs.highlight(code, { language: lang }).value;
+const lines = code.split('\n').length;
+---
+<figure class="overflow-hidden rounded-2xl border border-line bg-[#0b0e0c]">
+  <div class="flex items-center justify-between gap-3 border-b border-line bg-panel-2 px-4 py-2.5">
+    <span class="flex min-w-0 items-center gap-2.5 font-mono text-xs text-dim">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></svg>
+      <span class="truncate">{file}</span>
+    </span>
+    <span class="flex shrink-0 items-center gap-3">
+      <span class="font-mono text-[11px] uppercase text-faint">{lang === 'plaintext' ? 'txt' : lang}</span>
+      <button type="button" data-copy-code class="min-h-9 cursor-pointer rounded-md border border-line-2 px-2.5 font-mono text-[11px] text-fg-2 hover:border-accent hover:text-accent">{copyLabel}</button>
+    </span>
+  </div>
+  <pre class={`code overflow-x-auto p-5 font-mono text-[13px] leading-[1.7] ${lines > 24 ? 'max-h-[460px] overflow-y-auto' : ''}`}><code set:html={html}></code></pre>
+</figure>
