@@ -1,0 +1,214 @@
+---
+import Base from '../layouts/Base.astro';
+import { content, path, type Lang } from '../i18n';
+import { platforms, labCount, type LabHost } from '../data/labs';
+import { projectTools } from '../data/graph';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const { projects } = content(lang);
+
+const t = {
+  en: {
+    title: 'Lab map · Mouaad Sekkouri',
+    desc: 'Every project by Mouaad Sekkouri, grouped by the infrastructure it runs on: Kubernetes, Azure, Active Directory, detection stack, attack range and more.',
+    eyebrow: 'LAB MAP',
+    h1a: '{n} projects. {p} networks.', h1b: 'Most of them share the same infrastructure.',
+    lead: 'I do not rebuild a lab for every project. One Kubernetes cluster, one Azure tenant, one Active Directory domain, one detection stack: each project is another host on the same network. Open a host to see what ran on it.',
+    stats: ['with code, a report or a live URL', 'labs and coursework', 'networks'],
+    tools: 'Light up a shared tool', clear: 'Clear',
+    toolLine: '{tool}: {n} projects on {p} networks.',
+    proofLabel: 'Show', proofAll: 'Everything', proofEv: 'Code or report', proofLab: 'Labs and coursework',
+    core: 'Security, cloud and infrastructure', also: 'Also built',
+    coreNode: 'mouaad-core', coreSub: 'edge router · Lille, mobile across France',
+    hostsWord: 'hosts', baseWord: 'shared base',
+    proof: { Live: 'Live', Repo: 'Repo', Report: 'Report', Brief: 'Brief', Lab: 'Coursework' } as Record<string, string>,
+    labCtx: 'Done in class or in my home lab. No public artifact: happy to walk through it in an interview.',
+    open: { case: 'Read the case file', repo: 'View on GitHub', live: 'Visit the live site' },
+    legend: 'Lime: live or code on GitHub · Amber: written report or internship brief · Hollow: labs and coursework, no public artifact.',
+    back: 'Back to the portfolio', toIndex: 'Projects with proof',
+  },
+  fr: {
+    title: 'Cartographie des labs · Mouaad Sekkouri',
+    desc: 'Tous les projets de Mouaad Sekkouri, regroupés par l’infrastructure sur laquelle ils tournent : Kubernetes, Azure, Active Directory, stack de détection, range offensif et plus.',
+    eyebrow: 'CARTOGRAPHIE DES LABS',
+    h1a: '{n} projets. {p} réseaux.', h1b: 'La plupart partagent la même infrastructure.',
+    lead: 'Je ne reconstruis pas un lab pour chaque projet. Un cluster Kubernetes, un tenant Azure, un domaine Active Directory, une stack de détection : chaque projet est un hôte de plus sur le même réseau. Ouvrez un hôte pour voir ce qui y a tourné.',
+    stats: ['avec code, rapport ou URL publique', 'labs et projets de cours', 'réseaux'],
+    tools: 'Allumer un outil partagé', clear: 'Effacer',
+    toolLine: '{tool} : {n} projets sur {p} réseaux.',
+    proofLabel: 'Afficher', proofAll: 'Tout', proofEv: 'Code ou rapport', proofLab: 'Labs et cours',
+    core: 'Sécurité, cloud et infrastructure', also: 'Également réalisés',
+    coreNode: 'mouaad-core', coreSub: 'routeur de bordure · Lille, mobile partout en France',
+    hostsWord: 'hôtes', baseWord: 'socle commun',
+    proof: { Live: 'En ligne', Repo: 'Repo', Report: 'Rapport', Brief: 'Synthèse', Lab: 'Cours & labs' } as Record<string, string>,
+    labCtx: 'Réalisé en cours ou dans mon lab personnel. Pas d’artefact public : je le présente volontiers en entretien.',
+    open: { case: 'Lire le dossier', repo: 'Voir sur GitHub', live: 'Voir le site en ligne' },
+    legend: 'Vert : en ligne ou code sur GitHub · Ambre : rapport écrit ou synthèse de stage · Creux : labs et cours, sans artefact public.',
+    back: 'Retour au portfolio', toIndex: 'Projets avec preuve',
+  },
+}[lang];
+
+const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ''));
+
+type Host = { id: string; ip: string; title: string; ctx: string; stack: string[]; match: string; proof: string; ev: boolean; links: { label: string; href: string; ext: boolean }[] };
+
+const nets = platforms.map((pl) => {
+  const prefix = pl.net.split('.').slice(0, 3).join('.');
+  const hosts: Host[] = pl.hosts.map((h, i) => {
+    const ip = `${prefix}.${11 + i}`;
+    if (typeof h === 'string') {
+      const p = projects.find((x) => x.id === h)!;
+      const stack = p.stack.split(',').map((s) => s.trim());
+      const links: Host['links'] = [];
+      if (p.slug) links.push({ label: t.open.case, href: path(lang, `/work/${p.slug}`), ext: false });
+      if (p.href) links.push({ label: p.href.includes('github.com') ? t.open.repo : t.open.live, href: p.href, ext: true });
+      return { id: p.id, ip, title: p.title, ctx: p.context, stack, match: [...stack, ...(projectTools[p.id] ?? [])].join(' | '), proof: p.proof, ev: true, links };
+    }
+    const l = h as LabHost;
+    return { id: l.id, ip, title: l[lang], ctx: t.labCtx, stack: l.stack, match: l.stack.join(' | '), proof: 'Lab', ev: false, links: [] };
+  });
+  return { key: pl.key, net: pl.net, zone: pl.zone, name: pl[lang].name, base: pl[lang].base, hosts };
+});
+
+const all = nets.flatMap((n) => n.hosts);
+const evCount = all.filter((h) => h.ev).length;
+
+// Tools that recur across networks: the point of the page.
+const sharedTools: { name: string; re: string }[] = [
+  { name: 'Docker', re: 'docker|kaniko' },
+  { name: 'Kubernetes', re: 'kubernetes|\\bkind\\b|networkpolic|pod security' },
+  { name: 'GitLab CI', re: 'gitlab' },
+  { name: 'Terraform', re: 'terraform' },
+  { name: 'Ansible', re: 'ansible' },
+  { name: 'Azure', re: 'azure|entra|sentinel|defender|\\bkql\\b' },
+  { name: 'Active Directory', re: 'active directory|bloodhound|pingcastle|\\bgpo\\b|laps' },
+  { name: 'PowerShell', re: 'powershell' },
+  { name: 'Python', re: 'python|flask|fastapi|pytest|pandas|airflow|pyspark|scikit|tensorflow|spacy|selenium' },
+  { name: 'PostgreSQL', re: 'postgres' },
+  { name: 'Trivy', re: 'trivy' },
+  { name: 'Elastic / Wazuh', re: '\\belk\\b|elastic|kibana|wazuh|filebeat|ossec' },
+  { name: 'Grafana', re: 'grafana' },
+  { name: 'pfSense', re: 'pfsense' },
+  { name: 'Next.js', re: 'next\\.js' },
+];
+const toolStats = sharedTools.map((tool) => {
+  const rx = new RegExp(tool.re, 'i');
+  const hits = nets.map((n) => n.hosts.filter((h) => rx.test(h.match)).length);
+  return { ...tool, n: hits.reduce((a, b) => a + b, 0), p: hits.filter(Boolean).length };
+}).filter((x) => x.n >= 3).sort((a, b) => b.n - a.n);
+
+const data = JSON.stringify({ tools: toolStats.map(({ name, re }) => ({ name, re })), line: t.toolLine });
+
+const led: Record<string, string> = {
+  Live: 'lab-led lab-led-live', Repo: 'lab-led lab-led-repo', Report: 'lab-led lab-led-doc', Brief: 'lab-led lab-led-doc', Lab: 'lab-led lab-led-lab',
+};
+const proofText: Record<string, string> = { Live: 'text-amber', Repo: 'text-accent', Report: 'text-fg-2', Brief: 'text-fg-2', Lab: 'text-dim' };
+const ext = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>';
+const zones = [
+  { key: 'core', label: t.core, nets: nets.filter((n) => n.zone === 'core') },
+  { key: 'also', label: t.also, nets: nets.filter((n) => n.zone === 'also') },
+];
+---
+<Base lang={lang} title={t.title} description={t.desc}>
+  <section class="relative overflow-hidden">
+    <div class="grid-bg pointer-events-none absolute inset-0 h-[640px]" aria-hidden="true"></div>
+    <div class="wrap relative flex flex-col gap-7 pb-10 pt-16 sm:pt-20">
+      <span class="eyebrow">{t.eyebrow}</span>
+      <h1 class="max-w-[1080px] font-display text-[clamp(38px,5.8vw,80px)] font-extrabold leading-[.98] tracking-[-0.03em]">{fill(t.h1a, { n: all.length, p: nets.length })}<br /><span class="text-accent">{t.h1b}</span></h1>
+      <p class="max-w-[760px] text-xl leading-relaxed text-muted">{t.lead}</p>
+      <div class="flex flex-wrap gap-x-10 gap-y-4 font-mono">
+        <div class="flex items-baseline gap-2.5"><span class="font-display text-4xl font-extrabold text-accent">{evCount}</span><span class="text-sm text-dim">{t.stats[0]}</span></div>
+        <div class="flex items-baseline gap-2.5"><span class="font-display text-4xl font-extrabold text-fg">{labCount}</span><span class="text-sm text-dim">{t.stats[1]}</span></div>
+        <div class="flex items-baseline gap-2.5"><span class="font-display text-4xl font-extrabold text-fg">{nets.length}</span><span class="text-sm text-dim">{t.stats[2]}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap flex flex-col gap-8 pb-24" data-labs={data}>
+    <!-- controls -->
+    <div class="z-30 -mx-4 md:sticky md:top-[76px] flex flex-col gap-3 border-y border-line bg-ink/90 px-4 py-4 backdrop-blur-md sm:-mx-8 sm:px-8">
+      <div class="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0" role="group" aria-label={t.tools}>
+        <span class="mr-1 shrink-0 font-mono text-xs text-dim">{t.tools}</span>
+        {toolStats.map((tool, i) => (
+          <button type="button" data-tool={i} aria-pressed="false" class="min-h-9 shrink-0 cursor-pointer rounded-full border border-line-2 bg-panel px-3 font-mono text-xs text-fg-2 transition-colors hover:border-[#3a4a40] aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-ink">{tool.name}<span class="ml-1.5 opacity-60">{tool.n}</span></button>
+        ))}
+        <button type="button" data-tool-clear hidden class="min-h-9 cursor-pointer px-2 font-mono text-xs text-dim underline hover:text-accent">{t.clear}</button>
+      </div>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2" role="group" aria-label={t.proofLabel}>
+          <span class="mr-1 font-mono text-xs text-dim">{t.proofLabel}</span>
+          <button type="button" data-proof="all" aria-pressed="true" class="min-h-9 cursor-pointer rounded-lg border border-line-2 px-3 text-sm text-fg-2 aria-pressed:border-fg-2 aria-pressed:text-fg">{t.proofAll}</button>
+          <button type="button" data-proof="ev" aria-pressed="false" class="min-h-9 cursor-pointer rounded-lg border border-line-2 px-3 text-sm text-fg-2 aria-pressed:border-accent aria-pressed:text-accent">{t.proofEv}</button>
+          <button type="button" data-proof="lab" aria-pressed="false" class="min-h-9 cursor-pointer rounded-lg border border-line-2 px-3 text-sm text-fg-2 aria-pressed:border-fg-2 aria-pressed:text-fg">{t.proofLab}</button>
+        </div>
+        <p data-tool-line class="font-mono text-xs text-accent" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <!-- map -->
+    <div class="lab-map relative pl-8 sm:pl-10" data-lab-map>
+      <svg data-lab-wires class="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true"></svg>
+
+      <div data-lab-core class="relative mb-12 inline-flex items-center gap-3 rounded-xl border border-accent/50 bg-[#111a0c] px-4 py-3">
+        <span class="pulse-dot h-2.5 w-2.5 rounded-full bg-accent"></span>
+        <span class="flex flex-col">
+          <span class="font-mono text-sm text-accent">{t.coreNode}</span>
+          <span class="font-mono text-[11px] text-dim">{t.coreSub}</span>
+        </span>
+      </div>
+
+      {zones.map((z) => (
+        <div class={z.key === 'also' ? 'mt-6' : ''}>
+          <h2 class="mb-12 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.14em] text-faint">{z.label}<span class="h-px flex-1 bg-line"></span></h2>
+          <div class={`grid grid-cols-1 gap-x-5 gap-y-12 md:grid-cols-2 ${z.key === 'core' ? 'xl:grid-cols-3' : ''}`}>
+            {z.nets.map((n) => (
+              <section data-net={n.key} class={`lab-net reveal relative flex flex-col rounded-2xl border border-line bg-panel ${z.key === 'also' ? 'lab-net-also' : ''}`} aria-label={n.name}>
+                <header class="flex flex-col gap-1.5 border-b border-line px-4 py-3.5">
+                  <div class="flex items-center justify-between gap-3">
+                    <h3 class="font-display text-lg font-semibold leading-tight">{n.name}</h3>
+                    <span class="shrink-0 font-mono text-[11px] text-faint">{n.hosts.length} {t.hostsWord}</span>
+                  </div>
+                  <span class="font-mono text-[11px] text-accent/80">{n.net}</span>
+                  <span class="font-mono text-[11px] leading-relaxed text-dim"><span class="text-faint">{t.baseWord}:</span> {n.base}</span>
+                </header>
+                <ul class="flex flex-col py-1.5">
+                  {n.hosts.map((h) => (
+                    <li data-host data-ev={h.ev ? '1' : '0'} data-tools={h.match} class="lab-host">
+                      <details class="group">
+                        <summary class="flex min-h-11 cursor-pointer list-none items-center gap-3 px-4 py-2 transition-colors hover:bg-[#131915] [&::-webkit-details-marker]:hidden">
+                          <span class={led[h.proof]} aria-hidden="true"></span>
+                          <span class="hidden w-7 shrink-0 font-mono text-[11px] text-faint sm:inline">.{h.ip.split('.').pop()}</span>
+                          <span class="min-w-0 flex-1 text-[14px] leading-snug text-fg-2 group-open:text-fg">{h.title}</span>
+                          <span class={`shrink-0 font-mono text-[10px] uppercase tracking-wide ${proofText[h.proof]}`}>{t.proof[h.proof]}</span>
+                        </summary>
+                        <div class="flex flex-col gap-2.5 border-l-2 border-accent/40 bg-[#0c100e] px-4 py-3 ml-4 mr-3 mb-2 rounded-r-lg">
+                          <span class="font-mono text-[11px] text-faint">{h.id} · {h.ip}</span>
+                          <p class="text-[13px] leading-relaxed text-muted">{h.ctx}</p>
+                          <ul class="flex flex-wrap gap-1.5">{h.stack.map((s) => <li class="chip text-[11px]">{s}</li>)}</ul>
+                          {h.links.length > 0 && (
+                            <div class="flex flex-wrap gap-x-4 gap-y-1">
+                              {h.links.map((l) => (
+                                <a href={l.href} target={l.ext ? '_blank' : undefined} rel={l.ext ? 'noopener' : undefined} class="inline-flex min-h-9 items-center gap-1.5 font-mono text-xs text-accent hover:underline">{l.label}{l.ext && <Fragment set:html={ext} />}</a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </details>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="font-mono text-xs leading-relaxed text-faint">{t.legend}</p>
+    <div class="flex flex-wrap gap-x-6 gap-y-2">
+      <a href={path(lang, '/#index')} class="inline-flex min-h-11 items-center gap-2 font-mono text-sm text-accent hover:underline">{t.toIndex} →</a>
+      <a href={path(lang, '/')} class="inline-flex min-h-11 items-center gap-2 font-mono text-sm text-dim hover:text-accent">← {t.back}</a>
+    </div>
+  </div>
+</Base>

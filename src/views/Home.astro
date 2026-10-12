@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Art from '../components/Art.astro';
 import { ui, path, content, cvPdf, type Lang } from '../i18n';
 import { projectTools } from '../data/graph';
+import { platforms, labCount } from '../data/labs';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -30,6 +31,16 @@ const termData = JSON.stringify({
   t: t.terminal,
 });
 
+const labTotal = platforms.reduce((a, pl) => a + pl.hosts.length, 0);
+const labTeaser = {
+  en: { tag: 'LAB MAP', title: `All ${labTotal} projects on one network map`, text: `The ${projects.length} projects above, plus ${labCount} labs and coursework, wired by the infrastructure they share: one Kubernetes cluster, one Azure tenant, one AD domain, one detection stack.`, cta: 'Open the lab map' },
+  fr: { tag: 'CARTOGRAPHIE', title: `Les ${labTotal} projets sur une seule carte réseau`, text: `Les ${projects.length} projets ci-dessus, plus ${labCount} labs et projets de cours, reliés par l’infrastructure qu’ils partagent : un cluster Kubernetes, un tenant Azure, un domaine AD, une stack de détection.`, cta: 'Ouvrir la cartographie' },
+}[lang];
+const labProof = (h: string | { id: string }) => {
+  if (typeof h !== 'string') return 'lab-led lab-led-lab';
+  const pr = projects.find((p) => p.id === h)?.proof;
+  return pr === 'Live' || pr === 'Repo' ? 'lab-led lab-led-repo' : 'lab-led lab-led-doc';
+};
 const spans = ['lg:col-span-4', 'lg:col-span-2', 'lg:col-span-2', 'lg:col-span-4', 'lg:col-span-3', 'lg:col-span-3'];
 const filters = ['All', ...tracks.map((x) => x.key)];
 const proofClass: Record<string, string> = { Live: 'text-amber', Repo: 'text-accent', Report: 'text-fg-2', Brief: 'text-fg-2' };
@@ -201,6 +212,22 @@ const serviceIcons = [
       </table>
     </div>
     <p class="font-mono text-xs text-faint">{t.proofLegend}</p>
+    <a href={path(lang, '/labs')} class="spot card reveal group mt-4 grid grid-cols-1 items-center gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_1.1fr]">
+      <div class="flex flex-col gap-3.5">
+        <span class="eyebrow">{labTeaser.tag}</span>
+        <h3 class="font-display text-[clamp(26px,3vw,38px)] font-extrabold leading-[1.05] tracking-[-0.02em]">{labTeaser.title}</h3>
+        <p class="text-base leading-relaxed text-muted">{labTeaser.text}</p>
+        <span class="mt-1 inline-flex items-center gap-2 font-mono text-sm text-accent group-hover:underline">{labTeaser.cta} <Fragment set:html={arrow} /></span>
+      </div>
+      <div class="grid grid-cols-3 gap-2.5 sm:grid-cols-4" aria-hidden="true">
+        {platforms.map((pl) => (
+          <div class={`flex flex-col gap-2 rounded-xl border border-line p-3 ${pl.zone === 'also' ? 'bg-panel-2' : 'bg-[#111613]'}`}>
+            <span class="truncate font-mono text-[10px] text-dim">{pl[lang].name}</span>
+            <span class="flex flex-wrap gap-1.5">{pl.hosts.map((h) => <span class={labProof(h)}></span>)}</span>
+          </div>
+        ))}
+      </div>
+    </a>
   </section>
 
   <!-- TOOLBOX -->

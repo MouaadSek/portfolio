@@ -101,3 +101,22 @@
 .code .hljs-title, .code .hljs-title.function_, .code .hljs-section { color: #e8ede9; font-weight: 600; }
 .code .hljs-params, .code .hljs-meta { color: #a9b5ae; }
 .code .hljs-bullet, .code .hljs-punctuation { color: #8c9a92; }
+
+/* lab map */
+.lab-led { width: 9px; height: 9px; border-radius: 9999px; flex-shrink: 0; }
+.lab-led-repo { background: var(--color-accent); box-shadow: 0 0 8px rgba(184,242,90,.45); }
+.lab-led-live { background: var(--color-accent); animation: pulse 2s ease-in-out infinite; }
+.lab-led-doc { background: var(--color-amber); box-shadow: 0 0 8px rgba(245,165,36,.35); }
+.lab-led-lab { border: 1.5px solid #5d6b63; background: transparent; }
+.lab-host { transition: opacity .25s ease; }
+.lab-host.is-dim { opacity: .22; }
+.lab-host.is-hit summary { background: rgba(184,242,90,.07); }
+.lab-host.is-hit .lab-led-lab { border-color: var(--color-accent); }
+.lab-net { transition: border-color .25s ease, opacity .25s ease, transform .3s ease; }
+.lab-net.is-lit { border-color: rgba(184,242,90,.55); }
+.lab-net.is-off { opacity: .45; }
+.lab-net-also { background: var(--color-panel-2); }
+.lab-wire { fill: none; stroke: #26322b; stroke-width: 1.5; transition: stroke .25s ease; }
+.lab-wire.is-lit { stroke: var(--color-accent); stroke-dasharray: 4 4; animation: flow 1.2s linear infinite; }
+.lab-trunk { fill: none; stroke: #2e3d34; stroke-width: 2; }
+.lab-pkt { fill: var(--color-accent); filter: drop-shadow(0 0 4px rgba(184,242,90,.8)); }

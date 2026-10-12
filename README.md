@@ -27,6 +27,7 @@ Personal portfolio: Cloud Security / DevSecOps profile, 19 projects, 6 case stud
 | CTF (5 flags, hashes only) | `src/scripts/ctf.ts`, flags in the home page source, `public/robots.txt`, `public/.well-known/security.txt`, the `X-CTF-Flag` header in `vercel.json`, and the console |
 | "Try to hack me" CSP demo | `src/scripts/hackme.ts` (on the security page) |
 | Recruiter match | `src/views/MatchPage.astro`, `src/scripts/match.ts`, skills in `src/data/match.ts` |
+| Lab map (all projects by shared infrastructure) | `src/views/LabsPage.astro`, `src/scripts/labs.ts`, data in `src/data/labs.ts` |
 | Skills constellation | `src/scripts/graph.ts`, project to tool links in `src/data/graph.ts` |
 | Security headers | `vercel.json` |
 

@@ -2,6 +2,7 @@
 import { initPackets } from './packets';
 import { initHackMe } from './hackme';
 import { initMatch } from './match';
+import { initLabs } from './labs';
 import { initGraph } from './graph';
 import { submit as ctfSubmit, progress as ctfProgress, TOTAL as CTF_TOTAL, consoleHint } from './ctf';
 consoleHint();
@@ -229,6 +230,7 @@ if (termEl) {
       }
       out.scrollTop = out.scrollHeight;
     },
+    labs: () => { line(T.labsGo, 'text-accent'); go(`${d.home === '/' ? '' : '/fr'}/labs`); },
     match: () => { line(T.matchGo ?? 'opening recruiter match...', 'text-accent'); go(`${d.home === '/' ? '' : '/fr'}/match`); },
     sudo: () => line(T.sudo, 'text-[#ff8a5c]'),
     rm: () => line(T.rm, 'text-[#ff8a5c]'),
@@ -237,7 +239,7 @@ if (termEl) {
     coffee: () => line(T.coffee, 'text-amber'),
     hello: () => line(T.hello), hi: () => line(T.hello), bonjour: () => line(T.hello), salut: () => line(T.hello),
   };
-  const visible = ['help', 'whoami', 'projects', 'open', 'skills', 'cv', 'contact', 'hire', 'lang', 'clear', 'security', 'ctf', 'submit', 'hint', 'match'];
+  const visible = ['help', 'whoami', 'projects', 'open', 'skills', 'cv', 'contact', 'hire', 'lang', 'clear', 'security', 'ctf', 'submit', 'hint', 'match', 'labs'];
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -278,6 +280,8 @@ if (hackme) initHackMe(hackme);
 /* ---------- recruiter match ---------- */
 const matchRoot = document.querySelector<HTMLElement>('[data-match]');
 if (matchRoot) initMatch(matchRoot);
+const labsRoot = document.querySelector<HTMLElement>('[data-labs]');
+if (labsRoot) initLabs(labsRoot);
 
 /* ---------- skills constellation ---------- */
 const graphRoot = document.querySelector<HTMLElement>('[data-graph]');
