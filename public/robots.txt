@@ -4,4 +4,4 @@ User-agent: *
 Allow: /
 Disallow: /ops-console/
 
-Sitemap: https://mouaadsek.vercel.app/sitemap-index.xml
+Sitemap: https://mouaadsek.dev/sitemap-index.xml

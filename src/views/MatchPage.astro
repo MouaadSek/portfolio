@@ -72,7 +72,7 @@ const t = {
 
 const data = JSON.stringify({
   lang,
-  site: `mouaadsek.vercel.app${lang === 'en' ? '/en' : ''}`,
+  site: `mouaadsek.dev${lang === 'en' ? '/en' : ''}`,
   skills: skills.map((s) => ({ k: s.k, label: s[lang], re: s.re, level: s.level, proj: s.proj })),
   projects: projects.map((p) => ({ id: p.id, title: p.title, context: p.context, href: p.slug ? path(lang, `/work/${p.slug}`) : p.href ?? path(lang, '/#index') })),
   example: examples[lang],

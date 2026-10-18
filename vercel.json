@@ -3,6 +3,17 @@
   "outputDirectory": "dist",
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "mouaadsek.vercel.app"
+        }
+      ],
+      "destination": "https://mouaadsek.dev/:path*",
+      "permanent": true
+    },
+    {
       "source": "/fr",
       "destination": "/",
       "permanent": true

@@ -5,7 +5,7 @@ import { content, path, cvPdf, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const { person, projects } = content(lang);
-const site = 'mouaadsek.vercel.app';
+const site = 'mouaadsek.dev';
 const others = projects.filter((p) => !p.slug).length;
 
 const copy = {

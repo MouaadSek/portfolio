@@ -8,7 +8,7 @@ import pkg from '../../package.json';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = ui[lang];
-const site = 'https://mouaadsek.vercel.app';
+const site = 'https://mouaadsek.dev';
 
 // Single source of truth: the headers actually deployed.
 const headers: { key: string; value: string }[] = vercel.headers[0].headers;
@@ -55,12 +55,12 @@ const c = {
     hm: { broken: 'Broken image on purpose: src=x does not exist, and that failure is exactly what fires onerror. The handler never ran: the CSP blocked it.', noCsp: 'No CSP detected in this environment (local preview?), so the demo is disabled for safety.', injected: 'payload inserted into the page', blocked: 'BLOCKED by', nothing: 'nothing to block: the payload contains no script, style or external resource', inline: 'inline code', removed: 'meta and base tags removed (they could redirect the page)' },
     verifyHead: 'Verify it yourself',
     verifyLead: 'Headers are public. These commands and scanners show exactly what the browser receives.',
-    scanners: [['securityheaders.com', `https://securityheaders.com/?q=${encodeURIComponent(site)}&followRedirects=on`], ['Mozilla HTTP Observatory', `https://developer.mozilla.org/en-US/observatory/analyze?host=mouaadsek.vercel.app`]],
+    scanners: [['securityheaders.com', `https://securityheaders.com/?q=${encodeURIComponent(site)}&followRedirects=on`], ['Mozilla HTTP Observatory', `https://developer.mozilla.org/en-US/observatory/analyze?host=mouaadsek.dev`]],
     limitsHead: 'Known limits',
     limits: [
-      'The site runs on a shared vercel.app subdomain until a custom domain is set up, so trust ultimately sits with the hosting provider.',
+      'The site runs on its own domain, mouaadsek.dev, but DNS and TLS still depend on the registrar and the host (Name.com and Vercel).',
       'My email address is published on purpose: being reachable is the point of a portfolio.',
-      'HSTS preload is declared in the header, but a domain only enters browser preload lists once it is submitted with a domain I own.',
+      'Browsers already force HTTPS for every .dev domain (the whole TLD is preloaded), but mouaadsek.dev is not yet submitted on its own to the HSTS preload list.',
     ],
     back: 'Back to the portfolio',
   },
@@ -102,12 +102,12 @@ const c = {
     hm: { broken: 'Image cassée volontairement : src=x n’existe pas, et cet échec est justement ce qui déclenche onerror. Le gestionnaire n’a jamais tourné : la CSP l’a bloqué.', noCsp: 'Aucune CSP détectée dans cet environnement (aperçu local ?), la démo est donc désactivée par sécurité.', injected: 'charge insérée dans la page', blocked: 'BLOQUÉ par', nothing: 'rien à bloquer : la charge ne contient ni script, ni style, ni ressource externe', inline: 'code inline', removed: 'balises meta et base retirées (elles pourraient rediriger la page)' },
     verifyHead: 'Vérifiez vous-même',
     verifyLead: 'Les en-têtes sont publics. Ces commandes et scanners montrent exactement ce que reçoit le navigateur.',
-    scanners: [['securityheaders.com', `https://securityheaders.com/?q=${encodeURIComponent(site)}&followRedirects=on`], ['Mozilla HTTP Observatory', `https://developer.mozilla.org/fr/observatory/analyze?host=mouaadsek.vercel.app`]],
+    scanners: [['securityheaders.com', `https://securityheaders.com/?q=${encodeURIComponent(site)}&followRedirects=on`], ['Mozilla HTTP Observatory', `https://developer.mozilla.org/fr/observatory/analyze?host=mouaadsek.dev`]],
     limitsHead: 'Limites connues',
     limits: [
-      'Le site tourne sur un sous-domaine partagé vercel.app en attendant un domaine personnalisé : la confiance repose in fine sur l’hébergeur.',
+      'Le site a son propre domaine, mouaadsek.dev, mais le DNS et le TLS dépendent toujours du registrar et de l’hébergeur (Name.com et Vercel).',
       'Mon adresse email est publiée volontairement : être joignable est le but d’un portfolio.',
-      'Le preload HSTS est déclaré dans l’en-tête, mais un domaine n’entre dans les listes des navigateurs qu’une fois soumis avec un domaine qui m’appartient.',
+      'Les navigateurs imposent déjà HTTPS pour tout domaine .dev (le TLD entier est préchargé), mais mouaadsek.dev n’est pas encore soumis seul à la liste de preload HSTS.',
     ],
     back: 'Retour au portfolio',
   },
