@@ -4,7 +4,7 @@ import { projects as projectsEn, person as personEn, tracks as tracksEn } from '
 
 export const person = {
   ...personEn,
-  role: 'Cyber : audit, SOC, GRC, conseil',
+  role: 'Conseil cyber, SOC, GRC',
   goal: 'sécurité cloud, DevSecOps',
   availability: 'Disponible en alternance dès maintenant · stage de 6 mois dès mars 2027 · mobile partout en France',
   languages: [

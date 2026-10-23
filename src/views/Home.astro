@@ -86,15 +86,15 @@ const serviceIcons = [
           <span class="ml-2.5 font-mono text-xs text-faint">soc-console / whoami</span>
           <span class="ml-auto hidden font-mono text-[11px] text-faint sm:inline">{t.terminal.hint}</span>
         </div>
-        <div class="px-5 pb-6 pt-5 font-mono text-[14px] leading-[1.85] text-fg-2">
+        <div class="px-4 pb-6 pt-5 font-mono text-[12.5px] leading-[1.85] text-fg-2 min-[400px]:px-5 min-[400px]:text-[14px]">
           <div><span class="text-accent">$</span> <span data-type="whoami --verbose">whoami --verbose</span></div>
-          <dl class="grid grid-cols-[88px_1fr]">
+          <dl class="grid grid-cols-[56px_1fr] min-[400px]:grid-cols-[88px_1fr]">
             <dt class="text-faint">name</dt><dd>{person.name}</dd>
             <dt class="text-faint">role</dt><dd>{person.role}</dd>
             <dt class="text-faint">goal</dt><dd>{person.goal}</dd>
             <dt class="text-faint">base</dt><dd>{t.term.base}</dd>
             <dt class="text-faint">langs</dt><dd>FR, EN (C1), AR, DE (A2)</dd>
-            <dt class="text-faint">stack</dt><dd>K8s, Azure, GitLab CI, Next.js</dd>
+            <dt class="text-faint">stack</dt><dd>K8s, Azure, GitLab, Python</dd>
             <dt class="text-faint">certs</dt><dd>AZ-900</dd>
           </dl>
           <div class="mt-2.5"><span class="text-accent">$</span> status</div>
