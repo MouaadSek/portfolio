@@ -3,7 +3,8 @@
 
 export const person = {
   name: 'Mouaad Sekkouri',
-  role: 'Cloud Security / DevSecOps',
+  role: 'Cyber: audit, SOC, GRC, consulting',
+  goal: 'cloud security, DevSecOps',
   location: 'Lille, France',
   email: 'mouaadsekkourii@gmail.com',
   linkedin: 'https://linkedin.com/in/sekkouri',
